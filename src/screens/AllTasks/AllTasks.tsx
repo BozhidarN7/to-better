@@ -1,9 +1,14 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+
+import { Task } from '@/components/Task';
 
 export default function AllTasks() {
   return (
     <View>
-      <Text>No tasks</Text>
+      <Task />
+      <Task />
+      <Task />
+      <Task />
     </View>
   );
 }
