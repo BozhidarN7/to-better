@@ -4,4 +4,5 @@ export default {
   SECONDARY_200: '#2d6def',
   SECONDARY_300: '#445df7',
   COMPELTED: '#6cb100',
+  GREY_100: '#cccccc',
 };
