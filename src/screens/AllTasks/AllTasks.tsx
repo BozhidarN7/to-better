@@ -1,20 +1,18 @@
-import { Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { Task } from '@/components/Task';
-import { ProgressBar } from '@/components/common';
+import { WeeklyCard } from '@/components/WeeklyCard';
 
 export default function AllTasks() {
   return (
-    <View>
-      <View>
-        <Text>15.01/21.01</Text>
-        <Text>10 of 20 completed</Text>
-        <ProgressBar progress={50} />
-      </View>
-      <Task />
-      <Task />
-      <Task />
-      <Task />
+    <View style={styles.allTasksContainer}>
+      <WeeklyCard />
+      <WeeklyCard />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  allTasksContainer: {
+    flex: 1,
+  },
+});
