@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 
 import { COLORS } from '@/constants';
-import { AllTasks } from '@/screens/AllTasks';
+import { AllTasks, DailyTasks } from '@/screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +26,7 @@ export default function App() {
               title: 'All Tasks',
             }}
           />
+          <Stack.Screen name="DailyTasks" component={DailyTasks} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
