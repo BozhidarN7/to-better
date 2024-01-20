@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.GREY_100,
     borderRadius: 10,
     marginVertical: 10,
+    marginHorizontal: 26,
   },
   bar: {
     height: 10,

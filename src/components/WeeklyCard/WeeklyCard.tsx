@@ -35,10 +35,10 @@ export default function WeeklyCard() {
 
 const styles = StyleSheet.create({
   weeklyCardContainer: {
-    marginHorizontal: 26,
     marginTop: 10,
   },
   weeklyCardHeaderContainer: {
+    marginHorizontal: 26,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
