@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { IconButton } from '@/components/common';
-import { COLORS } from '@/constants';
+import { COLORS, ICON_GROUPS } from '@/constants';
 
 export default function Task() {
   const [isTaskComplted, setIsTaskComplted] = useState(false);
@@ -13,6 +13,7 @@ export default function Task() {
     <View style={styles.container}>
       <View style={styles.checkButtonContainer}>
         <IconButton
+          iconGroup={ICON_GROUPS.FontAwesome}
           icon={isTaskComplted ? 'check-circle' : 'circle-thin'}
           size={24}
           color={isTaskComplted ? COLORS.COMPELTED : COLORS.SECONDARY_100}

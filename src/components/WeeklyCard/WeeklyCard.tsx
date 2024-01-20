@@ -4,6 +4,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import { WeeklyDays } from '../WeeklyDays';
 import { IconButton, ProgressBar } from '../common';
 
+import { ICON_GROUPS } from '@/constants';
+
 export default function WeeklyCard() {
   const [showDays, setShowDays] = useState(false);
 
@@ -20,6 +22,7 @@ export default function WeeklyCard() {
         </View>
         <View>
           <IconButton
+            iconGroup={ICON_GROUPS.FontAwesome}
             icon={showDays ? 'angle-up' : 'angle-down'}
             color="#000"
             size={24}
