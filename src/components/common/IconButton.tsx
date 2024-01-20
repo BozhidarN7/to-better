@@ -1,6 +1,6 @@
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, StyleProp, ViewStyle } from 'react-native';
 
 interface IconGroupsMap {
   [key: string]: typeof FontAwesome | typeof Ionicons;
@@ -11,6 +11,7 @@ interface IconButtonProps {
   color: string;
   size: number;
   onPress: () => void;
+  stylesOnPressed?: StyleProp<ViewStyle>;
 }
 
 const iconGroups: IconGroupsMap = {
@@ -23,6 +24,7 @@ export default function IconButton({
   icon,
   size,
   color,
+  stylesOnPressed,
   onPress,
 }: IconButtonProps) {
   const IconGroup = iconGroups[iconGroup] as React.ComponentType<{
@@ -32,7 +34,10 @@ export default function IconButton({
   }>;
 
   return (
-    <Pressable onPress={onPress}>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [pressed && stylesOnPressed]}
+    >
       <IconGroup name={icon} size={size} color={color} />
     </Pressable>
   );
