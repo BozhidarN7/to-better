@@ -4,8 +4,9 @@ import { StatusBar } from 'expo-status-bar';
 
 import { COLORS } from '@/constants';
 import { AllTasks, DailyTasks } from '@/screens';
+import { RootStackParamList } from '@/types/navigator-types';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
@@ -26,7 +27,11 @@ export default function App() {
               title: 'All Tasks',
             }}
           />
-          <Stack.Screen name="DailyTasks" component={DailyTasks} />
+          <Stack.Screen
+            name="DailyTasks"
+            component={DailyTasks}
+            initialParams={{ day: '' }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </>

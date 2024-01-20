@@ -1,21 +1,7 @@
-import {
-  NavigationProp,
-  ParamListBase,
-  RouteProp,
-} from '@react-navigation/native';
 import { useLayoutEffect } from 'react';
 import { Text, View } from 'react-native';
 
-interface Params extends ParamListBase {
-  params: {
-    day: string;
-  };
-}
-
-interface DailyTasksProps {
-  navigation: NavigationProp<ReactNavigation.RootParamList>;
-  route: RouteProp<ParamListBase>;
-}
+import { DailyTasksProps } from '@/types/navigator-types/root-stack-param-list';
 
 export default function DailyTasks({ route, navigation }: DailyTasksProps) {
   useLayoutEffect(() => {
