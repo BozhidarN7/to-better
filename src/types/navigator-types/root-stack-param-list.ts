@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type RootStackParamList = {
   AllTasks: undefined;
+  CreateTasks: undefined;
   DailyTasks: {
     day: string;
   };

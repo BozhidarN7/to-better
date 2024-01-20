@@ -29,7 +29,9 @@ export default function DailyTasks({ route, navigation }: DailyTasksProps) {
           icon="add-circle"
           color={COLORS.SECONDARY_300}
           size={56}
-          onPress={() => {}}
+          onPress={() => {
+            navigation.navigate('CreateTasks');
+          }}
           stylesOnPressed={styles.addButtonPressed}
         />
       </View>
