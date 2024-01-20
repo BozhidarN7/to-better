@@ -29,7 +29,7 @@ export default function WeeklyDays() {
             styles.singleDayContainer,
             pressed && styles.pressed,
           ]}
-          onPress={() => handleOpenSingleDayTasks.bind(null, day)}
+          onPress={() => handleOpenSingleDayTasks(day)}
         >
           <View>
             <Text style={styles.singleDayTitle}>{day}</Text>
