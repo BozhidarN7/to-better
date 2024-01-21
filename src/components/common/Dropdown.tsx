@@ -10,6 +10,8 @@ import {
   ViewStyle,
 } from 'react-native';
 
+import IconButton from './IconButton';
+
 import { COLORS } from '@/constants';
 import { DropDownOption } from '@/types';
 
@@ -44,6 +46,18 @@ export default function Dropdown({
     onSelect(value);
   };
 
+  const renderIcon = (option: DropDownOption | null) => {
+    return option && option.icon ? (
+      <IconButton
+        iconGroup={option.icon.iconGroup}
+        icon={option.icon.icon}
+        color={option.icon.color}
+        size={option.icon.size}
+        onPress={() => {}}
+      />
+    ) : null;
+  };
+
   return (
     <View>
       <Pressable
@@ -57,6 +71,7 @@ export default function Dropdown({
         <Text style={[styles.optionText, customStyles?.optionTextColor]}>
           {selectedValue ? selectedValue.label : defaultText}
         </Text>
+        {renderIcon(selectedValue)}
       </Pressable>
       {isOpen && (
         <ScrollView
@@ -75,6 +90,7 @@ export default function Dropdown({
               <Text style={[styles.optionText, customStyles?.optionTextColor]}>
                 {option.label}
               </Text>
+              {renderIcon(option)}
             </Pressable>
           ))}
         </ScrollView>
@@ -87,6 +103,9 @@ const styles = StyleSheet.create({
   pressableContainer: {
     padding: 10,
     borderRadius: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   dropdownBorder: {
     borderWidth: 1,
@@ -102,6 +121,9 @@ const styles = StyleSheet.create({
   },
   optionContainer: {
     padding: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   optionText: {
     color: COLORS.BLACK,

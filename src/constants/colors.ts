@@ -8,4 +8,8 @@ export default {
   SECONDARY_300: '#445df7',
   COMPELTED: '#6cb100',
   GREY_100: '#cccccc',
+  PRIORITY_LOW: '#7fff00',
+  PRIORITY_MEDIUM: '#ffed00',
+  PRIORITY_HIGH: '#ff9900',
+  PRIORITY_VERY_HIGH: '#ff0000',
 };
