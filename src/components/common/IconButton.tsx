@@ -1,13 +1,16 @@
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 import { Pressable, StyleProp, ViewStyle } from 'react-native';
 
 interface IconGroupsMap {
-  [key: string]: typeof FontAwesome | typeof Ionicons;
+  [key: string]: typeof FontAwesome | typeof Ionicons | typeof MaterialIcons;
 }
 interface IconButtonProps {
   iconGroup: string;
-  icon: keyof typeof FontAwesome.glyphMap | keyof typeof Ionicons.glyphMap;
+  icon:
+    | keyof typeof FontAwesome.glyphMap
+    | keyof typeof Ionicons.glyphMap
+    | keyof typeof MaterialIcons.glyphMap;
   color: string;
   size: number;
   onPress: () => void;
@@ -17,6 +20,7 @@ interface IconButtonProps {
 const iconGroups: IconGroupsMap = {
   FontAwesome,
   Ionicons,
+  MaterialIcons,
 };
 
 export default function IconButton({

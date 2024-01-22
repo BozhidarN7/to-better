@@ -20,7 +20,7 @@ interface DropdownProps {
   onSelect: (value: DropDownOption) => void;
   customStyles?: {
     optionTextColor: TextStyle;
-    dropdownBorder: StyleProp<ViewStyle>;
+    styles: StyleProp<ViewStyle>;
   };
   defaultText: string;
 }
@@ -64,7 +64,7 @@ export default function Dropdown({
         style={[
           styles.pressableContainer,
           styles.dropdownBorder,
-          customStyles?.dropdownBorder,
+          customStyles?.styles,
         ]}
         onPress={toggleDropdown}
       >
@@ -78,7 +78,7 @@ export default function Dropdown({
           style={[
             styles.optionsContainer,
             styles.dropdownBorder,
-            customStyles?.dropdownBorder,
+            customStyles?.styles,
           ]}
         >
           {options.map((option) => (
