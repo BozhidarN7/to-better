@@ -1,6 +1,6 @@
 import { StyleSheet, TextInput, View } from 'react-native';
 
-import { Dropdown } from '@/components/common';
+import { Button, Dropdown } from '@/components/common';
 import { COLORS, ICON_GROUPS } from '@/constants';
 import { DropDownOption } from '@/types';
 
@@ -135,6 +135,7 @@ export default function CreateTask() {
           optionTextColor: styles.dropdownOptionTextColor,
         }}
       />
+      <Button text="Add" />
     </View>
   );
 }
