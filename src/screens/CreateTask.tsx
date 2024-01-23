@@ -1,6 +1,6 @@
 import { StyleSheet, TextInput, View } from 'react-native';
 
-import { Button, Dropdown } from '@/components/common';
+import { CustomButton, Dropdown } from '@/components/common';
 import { COLORS, ICON_GROUPS } from '@/constants';
 import { DropDownOption } from '@/types';
 
@@ -135,7 +135,11 @@ export default function CreateTask() {
           optionTextColor: styles.dropdownOptionTextColor,
         }}
       />
-      <Button text="Add" />
+      <CustomButton
+        buttonStyles={styles.addButton}
+        pressedStyles={styles.addButtonPressed}
+        text="Add"
+      />
     </View>
   );
 }
@@ -163,5 +167,12 @@ const styles = StyleSheet.create({
   dropdownCustomStyles: {
     borderColor: COLORS.SECONDARY_300,
     marginVertical: 15,
+  },
+  addButton: {
+    backgroundColor: COLORS.ACCENT_300,
+    borderColor: COLORS.PRIMARY,
+  },
+  addButtonPressed: {
+    opacity: 0.75,
   },
 });

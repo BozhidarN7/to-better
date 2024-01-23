@@ -10,6 +10,8 @@ export default {
   GREY_100: '#cccccc',
 
   COMPELTED: '#6cb100',
+  ERROR: '#e91c1c',
+  ACCENT_300: '#e995c6',
 
   PRIORITY_LOW: '#7fff00',
   PRIORITY_MEDIUM: '#ffed00',

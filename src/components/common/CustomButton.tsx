@@ -9,19 +9,19 @@ import {
 
 import { COLORS } from '@/constants';
 
-interface ButtonProps {
+interface CustomButtonProps {
   text: string;
   buttonStyles?: StyleProp<ViewStyle>;
   textStyles?: StyleProp<ViewStyle>;
   pressedStyles?: StyleProp<ViewStyle>;
 }
 
-export default function Button({
+export default function CustomButton({
   text,
   buttonStyles,
   textStyles,
   pressedStyles,
-}: ButtonProps) {
+}: CustomButtonProps) {
   return (
     <Pressable
       style={({ pressed }) => [
