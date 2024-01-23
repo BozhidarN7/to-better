@@ -20,9 +20,11 @@ export default function Task() {
           onPress={checkButtonHandler}
         />
       </View>
+      <View style={styles.priorityIndicator} />
       <View style={styles.taskContent}>
         <Text>TITLE</Text>
         <Text>DESCRIPTION</Text>
+        <Text style={styles.categoryText}>Category</Text>
       </View>
     </View>
   );
@@ -39,5 +41,17 @@ const styles = StyleSheet.create({
   checkButtonContainer: {
     marginHorizontal: 16,
   },
-  taskContent: {},
+  priorityIndicator: {
+    alignSelf: 'stretch',
+    borderWidth: 2,
+    borderColor: COLORS.PRIORITY_LOW,
+    marginRight: 5,
+  },
+  taskContent: {
+    rowGap: 5,
+  },
+  categoryText: {
+    fontSize: 12,
+    color: COLORS.CATEGORY_TRAINING,
+  },
 });
