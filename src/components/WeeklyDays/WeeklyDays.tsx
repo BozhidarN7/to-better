@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     marginVertical: 6,
   },
   pressed: {
-    backgroundColor: COLORS.PRIMARY300,
+    backgroundColor: COLORS.PRIMARY_300,
     opacity: 0.75,
   },
   singleDayTitle: {

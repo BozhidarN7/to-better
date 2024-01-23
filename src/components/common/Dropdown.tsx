@@ -87,9 +87,7 @@ export default function Dropdown({
               style={styles.optionContainer}
               onPress={() => handleSelect(option)}
             >
-              <Text style={[styles.optionText, customStyles?.optionTextColor]}>
-                {option.label}
-              </Text>
+              <Text style={[styles.optionText]}>{option.label}</Text>
               {renderIcon(option)}
             </Pressable>
           ))}
@@ -109,7 +107,7 @@ const styles = StyleSheet.create({
   },
   dropdownBorder: {
     borderWidth: 1,
-    borderColor: COLORS.PRIMARY400,
+    borderColor: COLORS.PRIMARY_400,
   },
   optionsContainer: {
     position: 'absolute',
@@ -118,6 +116,8 @@ const styles = StyleSheet.create({
     right: 0,
     borderTopWidth: 0,
     borderRadius: 5,
+    backgroundColor: COLORS.PRIMARY_50,
+    zIndex: 2,
   },
   optionContainer: {
     padding: 10,
