@@ -11,7 +11,20 @@ export default function Task() {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.checkButtonContainer}>
+      <View style={styles.priorityIndicator} />
+      <View style={styles.taskContent}>
+        <Text>TITLE</Text>
+        <Text>DESCRIPTION</Text>
+        <Text style={styles.categoryText}>Category</Text>
+      </View>
+      <View style={styles.taskOperationsContainer}>
+        <IconButton
+          iconGroup={ICON_GROUPS.MaterialIcons}
+          icon="edit"
+          size={24}
+          color={COLORS.SECONDARY_100}
+          onPress={() => {}}
+        />
         <IconButton
           iconGroup={ICON_GROUPS.FontAwesome}
           icon={isTaskComplted ? 'check-circle' : 'circle-thin'}
@@ -19,12 +32,6 @@ export default function Task() {
           color={isTaskComplted ? COLORS.COMPELTED : COLORS.SECONDARY_100}
           onPress={checkButtonHandler}
         />
-      </View>
-      <View style={styles.priorityIndicator} />
-      <View style={styles.taskContent}>
-        <Text>TITLE</Text>
-        <Text>DESCRIPTION</Text>
-        <Text style={styles.categoryText}>Category</Text>
       </View>
     </View>
   );
@@ -38,8 +45,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#d8d2d2',
   },
-  checkButtonContainer: {
-    marginHorizontal: 16,
+  taskOperationsContainer: {
+    flexDirection: 'row',
+    columnGap: 10,
+    marginRight: 16,
   },
   priorityIndicator: {
     alignSelf: 'stretch',
@@ -48,6 +57,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   taskContent: {
+    flex: 1,
     rowGap: 5,
   },
   categoryText: {
