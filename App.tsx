@@ -8,10 +8,9 @@ import { AllTasks, DailyTasks } from '@/screens';
 import CreateTask from '@/screens/CreateTask';
 import store from '@/store';
 import { RootStackParamList } from '@/types/navigator-types';
-import { createDate } from '@/utils';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
-console.log(createDate('9/01/2024'));
+
 export default function App() {
   return (
     <>

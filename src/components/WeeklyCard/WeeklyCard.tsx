@@ -5,9 +5,18 @@ import { WeeklyDays } from '../WeeklyDays';
 import { IconButton, ProgressBar } from '../common';
 
 import { ICON_GROUPS } from '@/constants';
+import { TasksState } from '@/types/tasks';
+import { getDateAndMonth } from '@/utils';
 
-export default function WeeklyCard() {
+interface WeeklyCardProps {
+  tasksData: TasksState;
+}
+
+export default function WeeklyCard({ tasksData }: WeeklyCardProps) {
   const [showDays, setShowDays] = useState(false);
+
+  const startDate = getDateAndMonth(tasksData.sevenDaysPeriod.startDate);
+  const endDate = getDateAndMonth(tasksData.sevenDaysPeriod.endDate);
 
   const handleShowDays = () => {
     setShowDays((prev) => !prev);
@@ -17,7 +26,9 @@ export default function WeeklyCard() {
     <View style={styles.weeklyCardContainer}>
       <View style={styles.weeklyCardHeaderContainer}>
         <View>
-          <Text style={styles.weeklyCardTitle}>Week 15.01/21.01</Text>
+          <Text style={styles.weeklyCardTitle}>
+            Week {startDate}/{endDate}
+          </Text>
           <Text>10 of 20 completed</Text>
         </View>
         <View>

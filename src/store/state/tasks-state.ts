@@ -4,6 +4,7 @@ import { createDate } from '@/utils';
 
 const tasksState: TasksState[] = [
   {
+    id: 'week1',
     sevenDaysPeriod: {
       startDate: createDate('15/01/2024') || new Date(),
       endDate: createDate('21/01/2024') || new Date(),
