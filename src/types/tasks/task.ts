@@ -6,7 +6,6 @@ interface Task {
   description: string;
   priority: Priorities;
   category: Categories;
-  dueDate: Date;
 }
 
 export default Task;

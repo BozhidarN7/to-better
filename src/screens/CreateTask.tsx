@@ -117,11 +117,6 @@ export default function CreateTask() {
         placeholder="Description"
         placeholderTextColor={COLORS.SECONDARY_300}
       />
-      <TextInput
-        style={[styles.input]}
-        placeholder="Due date DD.MM.YYYY"
-        placeholderTextColor={COLORS.SECONDARY_300}
-      />
       <Dropdown
         options={priorityOptions}
         onSelect={handleSelect}
