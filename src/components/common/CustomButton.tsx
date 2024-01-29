@@ -14,6 +14,7 @@ interface CustomButtonProps {
   buttonStyles?: StyleProp<ViewStyle>;
   textStyles?: StyleProp<ViewStyle>;
   pressedStyles?: StyleProp<ViewStyle>;
+  onPress: () => void;
 }
 
 export default function CustomButton({
@@ -21,6 +22,7 @@ export default function CustomButton({
   buttonStyles,
   textStyles,
   pressedStyles,
+  onPress,
 }: CustomButtonProps) {
   return (
     <Pressable
@@ -29,6 +31,7 @@ export default function CustomButton({
         buttonStyles,
         pressed && pressedStyles,
       ]}
+      onPress={onPress}
     >
       <Text style={[styles.text, textStyles]}>{text}</Text>
     </Pressable>

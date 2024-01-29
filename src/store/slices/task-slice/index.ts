@@ -1,1 +1,1 @@
-export { tasksReducer } from './task-slice';
+export { tasksReducer, createTask } from './task-slice';

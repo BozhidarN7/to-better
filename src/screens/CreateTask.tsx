@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { CustomButton, Dropdown } from '@/components/common';
-import { COLORS, ICON_GROUPS } from '@/constants';
+import { COLORS, ICON_GROUPS, TASK_RESTRICTIONS } from '@/constants';
 import { DropDownOption } from '@/types';
 import { CreateTasksProps } from '@/types/navigator-types/root-stack-param-list';
+import { useDispatch } from 'react-redux';
+import { createTask } from '@/store/slices/task-slice';
+import { nanoid } from '@reduxjs/toolkit';
 
 const priorityOptions: DropDownOption[] = [
   {
@@ -102,28 +106,70 @@ const categoryOptions: DropDownOption[] = [
 ];
 
 export default function CreateTask({ route }: CreateTasksProps) {
+  const dispatch = useDispatch();
+  const [formState, setFormState] = useState({
+    title: '',
+    description: '',
+    category: '',
+    priority: '',
+  });
   const { date, month } = route.params;
-  console.log('date', date);
-  console.log('month', month);
-  const handleSelect = (value: DropDownOption) => {
-    console.log(`Selected value: ${value.label}`);
+
+  const handleSelectPriority = (value: DropDownOption) => {
+    setFormState((prev) => ({ ...prev, priority: value.value }));
   };
+
+  const handleSelectCategory = (value: DropDownOption) => {
+    setFormState((prev) => ({ ...prev, category: value.value }));
+  };
+
+  const handleCreateTask = () => {
+    const { title, description, category, priority } = formState;
+    if (
+      title.length < TASK_RESTRICTIONS.MIN_TITLE_LENGTH ||
+      title.length > TASK_RESTRICTIONS.MAX_TITLE_LENGTH
+    ) {
+      return;
+    }
+
+    if (description.length > TASK_RESTRICTIONS.MAX_DESCRIPTION_LENGTH) {
+      return;
+    }
+
+    const newTask = {
+      id: nanoid(),
+      title,
+      description,
+      priority,
+      category,
+      isCompeted: false,
+    };
+    dispatch(createTask(newTask));
+  };
+
   return (
     <View style={styles.root}>
       <TextInput
         style={styles.input}
         placeholder="Title"
         placeholderTextColor={COLORS.SECONDARY_300}
+        value={formState.title}
+        onChangeText={(value) =>
+          setFormState((prev) => ({ ...prev, title: value }))
+        }
       />
       <TextInput
         style={[styles.input, styles.multilineInput]}
         multiline
         placeholder="Description"
         placeholderTextColor={COLORS.SECONDARY_300}
+        onChangeText={(value) =>
+          setFormState((prev) => ({ ...prev, description: value }))
+        }
       />
       <Dropdown
         options={priorityOptions}
-        onSelect={handleSelect}
+        onSelect={handleSelectPriority}
         defaultText="Select task priority"
         customStyles={{
           styles: styles.dropdownCustomStyles,
@@ -132,7 +178,7 @@ export default function CreateTask({ route }: CreateTasksProps) {
       />
       <Dropdown
         options={categoryOptions}
-        onSelect={handleSelect}
+        onSelect={handleSelectCategory}
         defaultText="Select task category"
         customStyles={{
           styles: styles.dropdownCustomStyles,
@@ -143,6 +189,7 @@ export default function CreateTask({ route }: CreateTasksProps) {
         buttonStyles={styles.addButton}
         pressedStyles={styles.addButtonPressed}
         text="Add"
+        onPress={handleCreateTask}
       />
     </View>
   );
