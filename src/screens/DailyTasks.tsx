@@ -5,14 +5,17 @@ import { Task } from '@/components/Task';
 import { IconButton } from '@/components/common';
 import { COLORS, ICON_GROUPS } from '@/constants';
 import { DailyTasksProps } from '@/types/navigator-types/root-stack-param-list';
+import { padToTwoDigits } from '@/utils';
 
 export default function DailyTasks({ route, navigation }: DailyTasksProps) {
+  const { day, date, month } = route.params;
+
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: route.params?.day,
+      title: `${day} (${padToTwoDigits(date)}.${padToTwoDigits(month)})`,
       headerRight: () => <Text style={styles.headerRightStyles}>98%</Text>,
     });
-  }, [navigation, route.params?.day]);
+  }, [date, day, month, navigation]);
 
   return (
     <>
@@ -30,7 +33,7 @@ export default function DailyTasks({ route, navigation }: DailyTasksProps) {
           color={COLORS.SECONDARY_300}
           size={56}
           onPress={() => {
-            navigation.navigate('CreateTasks');
+            navigation.navigate(...(['CreateTasks', { date, month }] as never));
           }}
           stylesOnPressed={styles.addButtonPressed}
         />

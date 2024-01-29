@@ -3,6 +3,7 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import { CustomButton, Dropdown } from '@/components/common';
 import { COLORS, ICON_GROUPS } from '@/constants';
 import { DropDownOption } from '@/types';
+import { CreateTasksProps } from '@/types/navigator-types/root-stack-param-list';
 
 const priorityOptions: DropDownOption[] = [
   {
@@ -100,7 +101,10 @@ const categoryOptions: DropDownOption[] = [
   },
 ];
 
-export default function CreateTask() {
+export default function CreateTask({ route }: CreateTasksProps) {
+  const { date, month } = route.params;
+  console.log('date', date);
+  console.log('month', month);
   const handleSelect = (value: DropDownOption) => {
     console.log(`Selected value: ${value.label}`);
   };

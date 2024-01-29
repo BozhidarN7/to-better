@@ -42,7 +42,7 @@ export default function WeeklyCard({ tasksData }: WeeklyCardProps) {
         </View>
       </View>
       <ProgressBar progress={50} />
-      {showDays ? <WeeklyDays /> : null}
+      {showDays ? <WeeklyDays tasksData={tasksData} /> : null}
     </View>
   );
 }

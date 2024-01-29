@@ -6,6 +6,7 @@ interface Task {
   description: string;
   priority: Priorities;
   category: Categories;
+  isCompleted: boolean;
 }
 
 export default Task;
