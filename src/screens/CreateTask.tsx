@@ -1,13 +1,15 @@
+import { nanoid } from '@reduxjs/toolkit';
 import { useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import { CustomButton, Dropdown } from '@/components/common';
 import { COLORS, ICON_GROUPS, TASK_RESTRICTIONS } from '@/constants';
+import { Categories, Priorities } from '@/enums';
+import { createTask } from '@/store/slices/task-slice';
 import { DropDownOption } from '@/types';
 import { CreateTasksProps } from '@/types/navigator-types/root-stack-param-list';
-import { useDispatch } from 'react-redux';
-import { createTask } from '@/store/slices/task-slice';
-import { nanoid } from '@reduxjs/toolkit';
+import { Task } from '@/types/tasks';
 
 const priorityOptions: DropDownOption[] = [
   {
@@ -110,17 +112,17 @@ export default function CreateTask({ route }: CreateTasksProps) {
   const [formState, setFormState] = useState({
     title: '',
     description: '',
-    category: '',
-    priority: '',
+    category: Categories.Home,
+    priority: Priorities.Low,
   });
   const { date, month } = route.params;
 
   const handleSelectPriority = (value: DropDownOption) => {
-    setFormState((prev) => ({ ...prev, priority: value.value }));
+    setFormState((prev) => ({ ...prev, priority: value.value as Priorities }));
   };
 
   const handleSelectCategory = (value: DropDownOption) => {
-    setFormState((prev) => ({ ...prev, category: value.value }));
+    setFormState((prev) => ({ ...prev, category: value.value as Categories }));
   };
 
   const handleCreateTask = () => {
@@ -136,13 +138,13 @@ export default function CreateTask({ route }: CreateTasksProps) {
       return;
     }
 
-    const newTask = {
+    const newTask: Task = {
       id: nanoid(),
       title,
       description,
       priority,
       category,
-      isCompeted: false,
+      isCompleted: false,
     };
     dispatch(createTask(newTask));
   };
