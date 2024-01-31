@@ -146,7 +146,7 @@ export default function CreateTask({ route }: CreateTasksProps) {
       category,
       isCompleted: false,
     };
-    dispatch(createTask(newTask));
+    dispatch(createTask({ task: newTask }));
   };
 
   return (
