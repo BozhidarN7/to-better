@@ -4,12 +4,13 @@ type RootStackParamList = {
   AllTasks: undefined;
   CreateTasks: {
     date: number;
-    month: number;
+    weekId: string;
   };
   DailyTasks: {
     day: string;
     date: number;
     month: number;
+    weekId: string;
   };
 };
 

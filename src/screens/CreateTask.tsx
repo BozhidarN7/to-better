@@ -115,7 +115,7 @@ export default function CreateTask({ route }: CreateTasksProps) {
     category: Categories.Home,
     priority: Priorities.Low,
   });
-  const { date, month } = route.params;
+  const { date, weekId } = route.params;
 
   const handleSelectPriority = (value: DropDownOption) => {
     setFormState((prev) => ({ ...prev, priority: value.value as Priorities }));
@@ -146,7 +146,7 @@ export default function CreateTask({ route }: CreateTasksProps) {
       category,
       isCompleted: false,
     };
-    dispatch(createTask({ task: newTask }));
+    dispatch(createTask({ task: newTask, date, weekId }));
   };
 
   return (

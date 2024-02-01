@@ -8,7 +8,7 @@ import { DailyTasksProps } from '@/types/navigator-types/root-stack-param-list';
 import { padToTwoDigits } from '@/utils';
 
 export default function DailyTasks({ route, navigation }: DailyTasksProps) {
-  const { day, date, month } = route.params;
+  const { day, date, month, weekId } = route.params;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -33,7 +33,9 @@ export default function DailyTasks({ route, navigation }: DailyTasksProps) {
           color={COLORS.SECONDARY_300}
           size={56}
           onPress={() => {
-            navigation.navigate(...(['CreateTasks', { date, month }] as never));
+            navigation.navigate(
+              ...(['CreateTasks', { date, weekId }] as never),
+            );
           }}
           stylesOnPressed={styles.addButtonPressed}
         />
