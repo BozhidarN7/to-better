@@ -1,14 +1,13 @@
 export default function createDate(dateString: string) {
-  // Regular expression to check if the date string is in the format DD/MM/YYYY
-  const dateRegex =
-    /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/;
+  // Regular expression to check if the date string is in the format DD.MM.YYYY
+  const dateRegex = /^\d{2}\.\d{2}\.\d{4}$/;
 
   // Check if the date string matches the regular expression
   if (!dateRegex.test(dateString)) {
     return null;
   }
-  // Use split() method to split the dateString by "/" character
-  const dateParts = dateString.split('/');
+  // Use split() method to split the dateString by "." character
+  const dateParts = dateString.split('.');
 
   // Extract the day, month, and year from the dateParts array
   const day = parseInt(dateParts[0], 10);

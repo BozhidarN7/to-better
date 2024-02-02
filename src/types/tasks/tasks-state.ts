@@ -3,8 +3,8 @@ import Task from './task';
 interface TasksState {
   id: string;
   sevenDaysPeriod: {
-    startDate: Date;
-    endDate: Date;
+    startDate: string;
+    endDate: string;
   };
   tasks: {
     monday: Task[];

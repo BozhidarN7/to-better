@@ -1,6 +1,5 @@
-export default function getDateAndMonth(d: Date) {
-  const dateString = d.toLocaleDateString('en-GB');
-  const [date, month] = dateString.split('/');
+export default function getDateAndMonth(d: string) {
+  const [date, month] = d.split('.');
 
   return `${date}.${month}`;
 }
