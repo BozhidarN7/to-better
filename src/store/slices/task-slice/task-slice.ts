@@ -18,14 +18,12 @@ const tasksSlice = createSlice({
       if (!weeklyTasks) {
         return state;
       }
-      console.log('weeklTasks', weeklyTasks);
+
       const startDate = getDateAndMonth(
         weeklyTasks?.sevenDaysPeriod.startDate,
       ).split('.')[0];
       const day = DAYS_OF_THE_WEEK[Math.abs(Number(startDate) - date)];
-      console.log('startDate', startDate);
-      console.log('date', date);
-      console.log('day', day);
+
       weeklyTasks.tasks[day].push(task);
     },
   },

@@ -1,14 +1,35 @@
 import { useLayoutEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { Task } from '@/components/Task';
 import { IconButton } from '@/components/common';
-import { COLORS, ICON_GROUPS } from '@/constants';
+import { COLORS, DAYS_OF_THE_WEEK, ICON_GROUPS } from '@/constants';
+import { RootState } from '@/store';
 import { DailyTasksProps } from '@/types/navigator-types/root-stack-param-list';
-import { padToTwoDigits } from '@/utils';
+import { TasksState } from '@/types/tasks';
+import { getDateAndMonth, padToTwoDigits } from '@/utils';
 
 export default function DailyTasks({ route, navigation }: DailyTasksProps) {
   const { day, date, month, weekId } = route.params;
+  const tasksState = useSelector<RootState, TasksState[]>(
+    (state) => state.tasks,
+  );
+  const week = tasksState.find((weeks) => weeks.id === weekId);
+  const dayOfTheWeekIndex =
+    date -
+    Number(
+      getDateAndMonth(week?.sevenDaysPeriod.startDate || '').split('.')[0],
+    );
+  console.log(
+    Number(
+      getDateAndMonth(week?.sevenDaysPeriod.startDate || '').split('.')[0],
+    ),
+  );
+  const currentDayTasks =
+    week?.tasks[DAYS_OF_THE_WEEK[Math.abs(dayOfTheWeekIndex)]];
+
+  console.log(currentDayTasks);
 
   useLayoutEffect(() => {
     navigation.setOptions({

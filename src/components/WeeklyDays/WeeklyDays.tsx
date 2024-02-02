@@ -21,7 +21,6 @@ const daysOfTheWeek = [
 
 export default function WeeklyDays({ tasksData }: WeeklyDaysProps) {
   const navigation = useNavigation();
-  console.log('taskData', tasksData);
 
   const [date, month] = getDateAndMonth(tasksData.sevenDaysPeriod.startDate)
     .split('.')
