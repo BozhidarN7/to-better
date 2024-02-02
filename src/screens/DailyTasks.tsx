@@ -1,5 +1,5 @@
 import { useLayoutEffect } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { Task } from '@/components/Task';
@@ -29,8 +29,6 @@ export default function DailyTasks({ route, navigation }: DailyTasksProps) {
   const currentDayTasks =
     week?.tasks[DAYS_OF_THE_WEEK[Math.abs(dayOfTheWeekIndex)]];
 
-  console.log(currentDayTasks);
-
   useLayoutEffect(() => {
     navigation.setOptions({
       title: `${day} (${padToTwoDigits(date)}.${padToTwoDigits(month)})`,
@@ -40,13 +38,10 @@ export default function DailyTasks({ route, navigation }: DailyTasksProps) {
 
   return (
     <>
-      <ScrollView>
-        {Array(20)
-          .fill(0)
-          .map((_, index) => (
-            <Task key={index} />
-          ))}
-      </ScrollView>
+      <FlatList
+        data={currentDayTasks}
+        renderItem={(item) => <Task taskInfo={item.item} />}
+      />
       <View style={styles.addButtonContainer}>
         <IconButton
           iconGroup={ICON_GROUPS.Ionicons}

@@ -3,8 +3,13 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { IconButton } from '@/components/common';
 import { COLORS, ICON_GROUPS } from '@/constants';
+import { Task as TaskType } from '@/types/tasks';
 
-export default function Task() {
+interface TaskProps {
+  taskInfo: TaskType;
+}
+
+export default function Task({ taskInfo }: TaskProps) {
   const [isTaskComplted, setIsTaskComplted] = useState(false);
   const checkButtonHandler = () => {
     setIsTaskComplted((prev) => !prev);
@@ -13,9 +18,9 @@ export default function Task() {
     <View style={styles.container}>
       <View style={styles.priorityIndicator} />
       <View style={styles.taskContent}>
-        <Text>TITLE</Text>
-        <Text>DESCRIPTION</Text>
-        <Text style={styles.categoryText}>Category</Text>
+        <Text>{taskInfo.title}</Text>
+        <Text>{taskInfo.description}</Text>
+        <Text style={styles.categoryText}>{taskInfo.category}</Text>
       </View>
       <View style={styles.taskOperationsContainer}>
         <IconButton
