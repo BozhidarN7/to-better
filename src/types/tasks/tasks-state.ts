@@ -6,6 +6,8 @@ interface TasksState {
     startDate: string;
     endDate: string;
   };
+  totalTasks: number;
+  tasksCompleted: number;
   tasks: {
     monday: Task[];
     tuesday: Task[];
