@@ -2,5 +2,9 @@ export default function calculateTasksProgress(
   tasksCompleted: number,
   totalTasks: number,
 ) {
-  return (tasksCompleted / totalTasks) * 100;
+  if (totalTasks === 0) {
+    return 0;
+  }
+
+  return Math.trunc((tasksCompleted / totalTasks) * 100);
 }

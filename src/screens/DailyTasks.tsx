@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -8,7 +8,12 @@ import { COLORS, DAYS_OF_THE_WEEK, ICON_GROUPS } from '@/constants';
 import { RootState } from '@/store';
 import { DailyTasksProps } from '@/types/navigator-types/root-stack-param-list';
 import { TasksState } from '@/types/tasks';
-import { getDateAndMonth, padToTwoDigits } from '@/utils';
+import {
+  calculateTasksProgress,
+  getCompletedTasksCount,
+  getDateAndMonth,
+  padToTwoDigits,
+} from '@/utils';
 
 export default function DailyTasks({ route, navigation }: DailyTasksProps) {
   const { day, date, month, weekId } = route.params;
@@ -26,15 +31,25 @@ export default function DailyTasks({ route, navigation }: DailyTasksProps) {
       getDateAndMonth(week?.sevenDaysPeriod.startDate || '').split('.')[0],
     ),
   );
-  const currentDayTasks =
-    week?.tasks[DAYS_OF_THE_WEEK[Math.abs(dayOfTheWeekIndex)]];
+  const currentDayTasks = useMemo(
+    () => week?.tasks[DAYS_OF_THE_WEEK[Math.abs(dayOfTheWeekIndex)]] || [],
+    [dayOfTheWeekIndex, week?.tasks],
+  );
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: `${day} (${padToTwoDigits(date)}.${padToTwoDigits(month)})`,
-      headerRight: () => <Text style={styles.headerRightStyles}>98%</Text>,
+      title: `${day.replace(/^\w/, (c) => c.toUpperCase())} (${padToTwoDigits(date)}.${padToTwoDigits(month)})`,
+      headerRight: () => (
+        <Text style={styles.headerRightStyles}>
+          {calculateTasksProgress(
+            getCompletedTasksCount(currentDayTasks),
+            currentDayTasks.length,
+          )}
+          %
+        </Text>
+      ),
     });
-  }, [date, day, month, navigation]);
+  }, [currentDayTasks, date, day, month, navigation]);
 
   return (
     <>

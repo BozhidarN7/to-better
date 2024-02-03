@@ -1,28 +1,24 @@
 import { useNavigation } from '@react-navigation/native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { COLORS } from '@/constants';
+import { COLORS, DAYS_OF_THE_WEEK } from '@/constants';
 import { TasksState } from '@/types/tasks';
-import { getDateAndMonth, padToTwoDigits } from '@/utils';
+import {
+  calculateTasksProgress,
+  getCompletedTasksCount,
+  getDateAndMonth,
+  padToTwoDigits,
+} from '@/utils';
 
 interface WeeklyDaysProps {
   tasksData: TasksState;
 }
 
-const daysOfTheWeek = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
-];
-
 export default function WeeklyDays({ tasksData }: WeeklyDaysProps) {
   const navigation = useNavigation();
 
-  const [date, month] = getDateAndMonth(tasksData.sevenDaysPeriod.startDate)
+  const { tasks, sevenDaysPeriod } = tasksData;
+  const [date, month] = getDateAndMonth(sevenDaysPeriod.startDate)
     .split('.')
     .map((el) => Number(el));
 
@@ -45,7 +41,7 @@ export default function WeeklyDays({ tasksData }: WeeklyDaysProps) {
     );
   };
 
-  return daysOfTheWeek.map((day, index) => (
+  return DAYS_OF_THE_WEEK.map((day, index) => (
     <Pressable
       key={day}
       style={({ pressed }) => [styles.root, pressed && styles.pressed]}
@@ -64,10 +60,16 @@ export default function WeeklyDays({ tasksData }: WeeklyDaysProps) {
             {day}{' '}
             {`(${padToTwoDigits(+date + index)}.${padToTwoDigits(month)})`}
           </Text>
-          <Text style={styles.taskStatus}>14 tasks total</Text>
+          <Text style={styles.taskStatus}>{tasks[day].length} tasks total</Text>
         </View>
         <View>
-          <Text>98%</Text>
+          <Text>
+            {calculateTasksProgress(
+              getCompletedTasksCount(tasks[day]),
+              tasks[day].length,
+            )}
+            %
+          </Text>
         </View>
       </View>
     </Pressable>
@@ -89,6 +91,7 @@ const styles = StyleSheet.create({
     opacity: 0.75,
   },
   singleDayTitle: {
+    textTransform: 'capitalize',
     fontSize: 16,
     marginBottom: 4,
   },

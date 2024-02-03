@@ -11,7 +11,7 @@ interface TaskProps {
 }
 
 export default function Task({ taskInfo }: TaskProps) {
-  const [isTaskComplted, setIsTaskComplted] = useState(false);
+  const [isTaskComplted, setIsTaskComplted] = useState(taskInfo.isCompleted);
   const checkButtonHandler = () => {
     setIsTaskComplted((prev) => !prev);
   };
