@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { IconButton } from '@/components/common';
 import { COLORS, ICON_GROUPS } from '@/constants';
 import { Task as TaskType } from '@/types/tasks';
-import { getTaskPriorityColor } from '@/utils';
+import { getTaskCategoryColor, getTaskPriorityColor } from '@/utils';
 
 interface TaskProps {
   taskInfo: TaskType;
@@ -26,7 +26,14 @@ export default function Task({ taskInfo }: TaskProps) {
       <View style={styles.taskContent}>
         <Text>{taskInfo.title}</Text>
         <Text>{taskInfo.description}</Text>
-        <Text style={styles.categoryText}>{taskInfo.category}</Text>
+        <Text
+          style={[
+            styles.categoryText,
+            { color: getTaskCategoryColor(taskInfo.category) },
+          ]}
+        >
+          {taskInfo.category}
+        </Text>
       </View>
       <View style={styles.taskOperationsContainer}>
         <IconButton
@@ -64,7 +71,6 @@ const styles = StyleSheet.create({
   priorityIndicator: {
     alignSelf: 'stretch',
     borderWidth: 2,
-    borderColor: COLORS.PRIORITY_LOW,
     marginRight: 5,
   },
   taskContent: {
@@ -73,6 +79,5 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: 12,
-    color: COLORS.CATEGORY_TRAINING,
   },
 });
