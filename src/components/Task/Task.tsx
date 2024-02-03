@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { IconButton } from '@/components/common';
 import { COLORS, ICON_GROUPS } from '@/constants';
 import { Task as TaskType } from '@/types/tasks';
+import { getTaskPriorityColor } from '@/utils';
 
 interface TaskProps {
   taskInfo: TaskType;
@@ -16,7 +17,12 @@ export default function Task({ taskInfo }: TaskProps) {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.priorityIndicator} />
+      <View
+        style={[
+          styles.priorityIndicator,
+          { borderColor: getTaskPriorityColor(taskInfo.priority) },
+        ]}
+      />
       <View style={styles.taskContent}>
         <Text>{taskInfo.title}</Text>
         <Text>{taskInfo.description}</Text>
