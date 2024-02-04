@@ -2,7 +2,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { DAYS_OF_THE_WEEK } from '@/constants';
 import { tasksState } from '@/store/state';
-import { CreateTask } from '@/types/payload-types/task-slice-payload-types';
+import {
+  CreateTask,
+  UpdateTaskCompletionStatus,
+  UpdateTotalTasksCompleted,
+} from '@/types/payload-types/task-slice-payload-types';
 import { getDateAndMonth } from '@/utils';
 
 const tasksSlice = createSlice({
@@ -26,8 +30,50 @@ const tasksSlice = createSlice({
 
       weeklyTasks.tasks[day].push(task);
     },
+    updateTotalTasksCompleted(
+      state,
+      action: PayloadAction<UpdateTotalTasksCompleted>,
+    ) {
+      const { weekId, increase } = action.payload;
+      const weeklyTasks = state.find(
+        (weeklyTasks) => weeklyTasks.id === weekId,
+      );
+
+      if (!weeklyTasks) {
+        return state;
+      }
+      console.log(increase);
+      weeklyTasks.tasksCompleted = increase
+        ? weeklyTasks.tasksCompleted + 1
+        : weeklyTasks.tasksCompleted - 1;
+    },
+    updateTaskCompletionStatus(
+      state,
+      action: PayloadAction<UpdateTaskCompletionStatus>,
+    ) {
+      const { weekId, day, taskId } = action.payload;
+      const weeklyTasks = state.find(
+        (weeklyTasks) => weeklyTasks.id === weekId,
+      );
+
+      if (!weeklyTasks) {
+        return state;
+      }
+
+      const task = weeklyTasks.tasks[day].find((task) => task.id === taskId);
+
+      if (!task) {
+        return state;
+      }
+
+      task.isCompleted = !task.isCompleted;
+    },
   },
 });
 
-export const { createTask } = tasksSlice.actions;
+export const {
+  createTask,
+  updateTaskCompletionStatus,
+  updateTotalTasksCompleted,
+} = tasksSlice.actions;
 export const tasksReducer = tasksSlice.reducer;

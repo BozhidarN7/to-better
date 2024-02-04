@@ -26,11 +26,7 @@ export default function DailyTasks({ route, navigation }: DailyTasksProps) {
     Number(
       getDateAndMonth(week?.sevenDaysPeriod.startDate || '').split('.')[0],
     );
-  console.log(
-    Number(
-      getDateAndMonth(week?.sevenDaysPeriod.startDate || '').split('.')[0],
-    ),
-  );
+
   const currentDayTasks = useMemo(
     () => week?.tasks[DAYS_OF_THE_WEEK[Math.abs(dayOfTheWeekIndex)]] || [],
     [dayOfTheWeekIndex, week?.tasks],
@@ -55,7 +51,9 @@ export default function DailyTasks({ route, navigation }: DailyTasksProps) {
     <>
       <FlatList
         data={currentDayTasks}
-        renderItem={(item) => <Task taskInfo={item.item} />}
+        renderItem={(item) => (
+          <Task taskInfo={item.item} weekId={weekId} day={day} />
+        )}
       />
       <View style={styles.addButtonContainer}>
         <IconButton

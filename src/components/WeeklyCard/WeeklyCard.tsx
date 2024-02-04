@@ -16,6 +16,7 @@ export default function WeeklyCard({ tasksData }: WeeklyCardProps) {
   const [showDays, setShowDays] = useState(false);
 
   const { sevenDaysPeriod, totalTasks, tasksCompleted } = tasksData;
+  console.log(tasksCompleted);
   const startDate = getDateAndMonth(sevenDaysPeriod.startDate);
   const endDate = getDateAndMonth(sevenDaysPeriod.endDate);
 

@@ -1,19 +1,40 @@
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import { IconButton } from '@/components/common';
 import { COLORS, ICON_GROUPS } from '@/constants';
+import {
+  updateTaskCompletionStatus,
+  updateTotalTasksCompleted,
+} from '@/store/slices/task-slice';
+import { DayOfWeek } from '@/types';
 import { Task as TaskType } from '@/types/tasks';
 import { getTaskCategoryColor, getTaskPriorityColor } from '@/utils';
 
 interface TaskProps {
   taskInfo: TaskType;
+  weekId: string;
+  day: string;
 }
 
-export default function Task({ taskInfo }: TaskProps) {
+export default function Task({ taskInfo, weekId, day }: TaskProps) {
+  const dispatch = useDispatch();
   const [isTaskComplted, setIsTaskComplted] = useState(taskInfo.isCompleted);
+
   const checkButtonHandler = () => {
-    setIsTaskComplted((prev) => !prev);
+    setIsTaskComplted((prev) => {
+      const newValue = !prev;
+      dispatch(updateTotalTasksCompleted({ weekId, increase: newValue }));
+      dispatch(
+        updateTaskCompletionStatus({
+          weekId,
+          day: day as DayOfWeek,
+          taskId: taskInfo.id,
+        }),
+      );
+      return newValue;
+    });
   };
   return (
     <View style={styles.container}>

@@ -9,7 +9,7 @@ const tasksState: TasksState[] = [
       endDate: '21.01.2024',
     },
     totalTasks: 3,
-    tasksCompleted: 1,
+    tasksCompleted: 2,
     tasks: {
       monday: [],
       tuesday: [],

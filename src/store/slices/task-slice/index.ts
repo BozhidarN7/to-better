@@ -1,1 +1,6 @@
-export { tasksReducer, createTask } from './task-slice';
+export {
+  tasksReducer,
+  createTask,
+  updateTotalTasksCompleted,
+  updateTaskCompletionStatus,
+} from './task-slice';

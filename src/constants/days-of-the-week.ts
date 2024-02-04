@@ -1,11 +1,4 @@
-type DayOfWeek =
-  | 'monday'
-  | 'tuesday'
-  | 'wednesday'
-  | 'thursday'
-  | 'friday'
-  | 'saturday'
-  | 'sunday';
+import { DayOfWeek } from '@/types';
 
 const DAYS_OF_THE_WEEK: DayOfWeek[] = [
   'monday',
