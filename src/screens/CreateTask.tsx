@@ -107,7 +107,7 @@ const categoryOptions: DropDownOption[] = [
   },
 ];
 
-export default function CreateTask({ route }: CreateTasksProps) {
+export default function CreateTask({ route, navigation }: CreateTasksProps) {
   const dispatch = useDispatch();
   const [formState, setFormState] = useState({
     title: '',
@@ -147,6 +147,7 @@ export default function CreateTask({ route }: CreateTasksProps) {
       isCompleted: false,
     };
     dispatch(createTask({ task: newTask, date, weekId }));
+    navigation.goBack();
   };
 
   return (
