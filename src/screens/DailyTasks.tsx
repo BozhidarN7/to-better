@@ -31,6 +31,7 @@ export default function DailyTasks({ route, navigation }: DailyTasksProps) {
     () => week?.tasks[DAYS_OF_THE_WEEK[Math.abs(dayOfTheWeekIndex)]] || [],
     [dayOfTheWeekIndex, week?.tasks],
   );
+  const hasTasks = currentDayTasks.length > 0;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -49,12 +50,17 @@ export default function DailyTasks({ route, navigation }: DailyTasksProps) {
 
   return (
     <>
-      <FlatList
-        data={currentDayTasks}
-        renderItem={(item) => (
-          <Task taskInfo={item.item} weekId={weekId} day={day} />
-        )}
-      />
+      {hasTasks ? (
+        <FlatList
+          data={currentDayTasks}
+          renderItem={(item) => (
+            <Task taskInfo={item.item} weekId={weekId} day={day} />
+          )}
+        />
+      ) : (
+        <Text style={styles.noTasksText}>No tasks for this day</Text>
+      )}
+
       <View style={styles.addButtonContainer}>
         <IconButton
           iconGroup={ICON_GROUPS.Ionicons}
@@ -82,6 +88,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     right: 20,
+  },
+  noTasksText: {
+    fontSize: 16,
+    margin: 16,
   },
   addButtonPressed: {
     opacity: 0.75,
