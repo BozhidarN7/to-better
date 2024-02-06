@@ -48,8 +48,8 @@ export default function Dropdown({
 
   const handleSelect = (value: DropDownOption) => {
     setSelectedValue(value);
-    setIsOpen(false);
     onSelect(value);
+    return handleOuterIsOpen ? handleOuterIsOpen(index) : toggleDropdown();
   };
 
   const renderIcon = (option: DropDownOption | null) => {
