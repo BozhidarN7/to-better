@@ -106,9 +106,13 @@ const categoryOptions: DropDownOption[] = [
     },
   },
 ];
+const NUMBER_OF_DROPDOWNS = 2;
 
 export default function CreateTask({ route, navigation }: CreateTasksProps) {
   const dispatch = useDispatch();
+  const [dropdownOpenStatuses, setDropdownOpenStatuses] = useState(
+    Array(NUMBER_OF_DROPDOWNS).fill(0),
+  );
   const [formState, setFormState] = useState({
     title: '',
     description: '',
@@ -123,6 +127,12 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
 
   const handleSelectCategory = (value: DropDownOption) => {
     setFormState((prev) => ({ ...prev, category: value.value as Categories }));
+  };
+
+  const handleDropdowns = (index: number) => {
+    setDropdownOpenStatuses((prev) => {
+      return prev.map((_, i) => (i === index ? !prev[i] : false));
+    });
   };
 
   const handleCreateTask = () => {
@@ -150,6 +160,27 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
     navigation.goBack();
   };
 
+  const allDropdowns = [
+    {
+      options: priorityOptions,
+      onSelect: handleSelectPriority,
+      defaultText: 'Select task priority',
+      customStyles: {
+        styles: styles.dropdownCustomStyles,
+        optionTextColor: styles.dropdownOptionTextColor,
+      },
+    },
+    {
+      options: categoryOptions,
+      onSelect: handleSelectCategory,
+      defaultText: 'Select task category',
+      customStyles: {
+        styles: styles.dropdownCustomStyles,
+        optionTextColor: styles.dropdownOptionTextColor,
+      },
+    },
+  ];
+
   return (
     <View style={styles.root}>
       <TextInput
@@ -170,24 +201,18 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
           setFormState((prev) => ({ ...prev, description: value }))
         }
       />
-      <Dropdown
-        options={priorityOptions}
-        onSelect={handleSelectPriority}
-        defaultText="Select task priority"
-        customStyles={{
-          styles: styles.dropdownCustomStyles,
-          optionTextColor: styles.dropdownOptionTextColor,
-        }}
-      />
-      <Dropdown
-        options={categoryOptions}
-        onSelect={handleSelectCategory}
-        defaultText="Select task category"
-        customStyles={{
-          styles: styles.dropdownCustomStyles,
-          optionTextColor: styles.dropdownOptionTextColor,
-        }}
-      />
+      {allDropdowns.map((dropdownOptions, index) => (
+        <Dropdown
+          key={index}
+          index={index}
+          options={dropdownOptions.options}
+          defaultText={dropdownOptions.defaultText}
+          customStyles={dropdownOptions.customStyles}
+          onSelect={dropdownOptions.onSelect}
+          outerIsOpen={dropdownOpenStatuses[index]}
+          handleOuterIsOpen={handleDropdowns}
+        />
+      ))}
       <CustomButton
         buttonStyles={styles.addButton}
         pressedStyles={styles.addButtonPressed}

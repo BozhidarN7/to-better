@@ -23,6 +23,9 @@ interface DropdownProps {
     styles: StyleProp<ViewStyle>;
   };
   defaultText: string;
+  outerIsOpen?: boolean;
+  handleOuterIsOpen?: (index: number) => void;
+  index: number;
 }
 
 export default function Dropdown({
@@ -30,6 +33,9 @@ export default function Dropdown({
   onSelect,
   customStyles,
   defaultText,
+  index,
+  outerIsOpen,
+  handleOuterIsOpen,
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<DropDownOption | null>(
@@ -58,6 +64,8 @@ export default function Dropdown({
     ) : null;
   };
 
+  const showOptions = outerIsOpen ? outerIsOpen : isOpen;
+
   return (
     <View>
       <Pressable
@@ -66,14 +74,18 @@ export default function Dropdown({
           styles.dropdownBorder,
           customStyles?.styles,
         ]}
-        onPress={toggleDropdown}
+        onPress={() => {
+          return handleOuterIsOpen
+            ? handleOuterIsOpen(index)
+            : toggleDropdown();
+        }}
       >
         <Text style={[styles.optionText, customStyles?.optionTextColor]}>
           {selectedValue ? selectedValue.label : defaultText}
         </Text>
         {renderIcon(selectedValue)}
       </Pressable>
-      {isOpen && (
+      {showOptions && (
         <ScrollView
           style={[
             styles.optionsContainer,
