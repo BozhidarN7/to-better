@@ -1,6 +1,6 @@
 import { nanoid } from '@reduxjs/toolkit';
-import { useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { Fragment, useState } from 'react';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { CustomButton, Dropdown } from '@/components/common';
@@ -116,9 +116,27 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
   const [formState, setFormState] = useState({
     title: '',
     description: '',
-    category: Categories.Home,
-    priority: Priorities.Low,
+    category: '' as Categories,
+    priority: '' as Priorities,
   });
+  const [errors, setErrors] = useState({
+    title: {
+      show: false,
+      message: `Title must be between ${TASK_RESTRICTIONS.MIN_TITLE_LENGTH} and ${TASK_RESTRICTIONS.MAX_TITLE_LENGTH} characters long`,
+    },
+    description: {
+      show: false,
+      message: `Description is too long. Must be less than ${TASK_RESTRICTIONS.MIN_DESCRIPTION_LENGTH} characters long`,
+    },
+    priority: {
+      show: false,
+      message: 'Please select a priority from the dropdown menu',
+    },
+    category: {
+      show: false,
+      message: 'Please select a category from the dropdown menu',
+    },
+  } as { [key: string]: { show: boolean; message: string } });
   const { date, weekId } = route.params;
 
   const handleSelectPriority = (value: DropDownOption) => {
@@ -137,14 +155,43 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
 
   const handleCreateTask = () => {
     const { title, description, category, priority } = formState;
+    let hasError = false;
     if (
       title.length < TASK_RESTRICTIONS.MIN_TITLE_LENGTH ||
       title.length > TASK_RESTRICTIONS.MAX_TITLE_LENGTH
     ) {
-      return;
+      setErrors((prev) => ({
+        ...prev,
+        title: { ...prev.title, show: true },
+      }));
+      hasError = true;
     }
 
     if (description.length > TASK_RESTRICTIONS.MAX_DESCRIPTION_LENGTH) {
+      setErrors((prev) => ({
+        ...prev,
+        description: { ...prev.description, show: true },
+      }));
+      hasError = true;
+    }
+
+    if (!priority) {
+      setErrors((prev) => ({
+        ...prev,
+        priority: { ...prev.priority, show: true },
+      }));
+      hasError = true;
+    }
+
+    if (!category) {
+      setErrors((prev) => ({
+        ...prev,
+        category: { ...prev.category, show: true },
+      }));
+      hasError = true;
+    }
+
+    if (hasError) {
       return;
     }
 
@@ -162,6 +209,7 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
 
   const allDropdowns = [
     {
+      id: 'priority',
       options: priorityOptions,
       onSelect: handleSelectPriority,
       defaultText: 'Select task priority',
@@ -171,6 +219,7 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
       },
     },
     {
+      id: 'category',
       options: categoryOptions,
       onSelect: handleSelectCategory,
       defaultText: 'Select task category',
@@ -192,6 +241,9 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
           setFormState((prev) => ({ ...prev, title: value }))
         }
       />
+      {errors.title.show && (
+        <Text style={styles.errorText}>{errors.title.message}</Text>
+      )}
       <TextInput
         style={[styles.input, styles.multilineInput]}
         multiline
@@ -201,17 +253,26 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
           setFormState((prev) => ({ ...prev, description: value }))
         }
       />
+      {errors.description.show && (
+        <Text style={styles.errorText}>{errors.description.message}</Text>
+      )}
       {allDropdowns.map((dropdownOptions, index) => (
-        <Dropdown
-          key={index}
-          index={index}
-          options={dropdownOptions.options}
-          defaultText={dropdownOptions.defaultText}
-          customStyles={dropdownOptions.customStyles}
-          onSelect={dropdownOptions.onSelect}
-          outerIsOpen={dropdownOpenStatuses[index]}
-          handleOuterIsOpen={handleDropdowns}
-        />
+        <Fragment key={dropdownOptions.id}>
+          <Dropdown
+            index={index}
+            options={dropdownOptions.options}
+            defaultText={dropdownOptions.defaultText}
+            customStyles={dropdownOptions.customStyles}
+            onSelect={dropdownOptions.onSelect}
+            outerIsOpen={dropdownOpenStatuses[index]}
+            handleOuterIsOpen={handleDropdowns}
+          />
+          {errors[dropdownOptions.id].show && (
+            <Text style={styles.errorText}>
+              {errors[dropdownOptions.id].message}
+            </Text>
+          )}
+        </Fragment>
       ))}
       <CustomButton
         buttonStyles={styles.addButton}
@@ -240,6 +301,11 @@ const styles = StyleSheet.create({
   multilineInput: {
     height: 80,
   },
+  errorText: {
+    color: COLORS.ERROR,
+    fontSize: 12,
+    marginTop: -10,
+  },
   dropdownOptionTextColor: {
     color: COLORS.SECONDARY_300,
   },
@@ -250,6 +316,7 @@ const styles = StyleSheet.create({
   addButton: {
     backgroundColor: COLORS.ACCENT_300,
     borderColor: COLORS.PRIMARY,
+    marginTop: 15,
   },
   addButtonPressed: {
     opacity: 0.75,
