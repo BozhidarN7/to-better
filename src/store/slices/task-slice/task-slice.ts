@@ -29,6 +29,7 @@ const tasksSlice = createSlice({
       const day = DAYS_OF_THE_WEEK[Math.abs(Number(startDate) - date)];
 
       weeklyTasks.tasks[day].push(task);
+      weeklyTasks.totalTasks += 1;
     },
     updateTotalTasksCompleted(
       state,
@@ -42,7 +43,7 @@ const tasksSlice = createSlice({
       if (!weeklyTasks) {
         return state;
       }
-      console.log(increase);
+
       weeklyTasks.tasksCompleted = increase
         ? weeklyTasks.tasksCompleted + 1
         : weeklyTasks.tasksCompleted - 1;
