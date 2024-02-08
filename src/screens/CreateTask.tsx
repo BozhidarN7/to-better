@@ -225,10 +225,11 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
       category,
       isCompleted: false,
     };
+
     if (edit) {
       dispatch(
         editTask({
-          task: newTask,
+          task: { ...newTask, id: taskToEdit.id },
           date,
           weekId,
           taskId: taskToEdit.id,
