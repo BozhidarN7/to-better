@@ -1,5 +1,5 @@
 import { nanoid } from '@reduxjs/toolkit';
-import { Fragment, useState } from 'react';
+import { Fragment, useLayoutEffect, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -9,6 +9,7 @@ import { Categories, Priorities } from '@/enums';
 import { RootState } from '@/store';
 import {
   createTask,
+  editTask,
   selectTaskByWeekIdAndDate,
 } from '@/store/slices/task-slice';
 import { DropDownOption } from '@/types';
@@ -154,6 +155,12 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
     },
   } as { [key: string]: { show: boolean; message: string } });
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: edit ? 'Edit Task' : 'Create Task',
+    });
+  }, [edit, navigation]);
+
   const handleSelectPriority = (value: DropDownOption) => {
     setFormState((prev) => ({ ...prev, priority: value.value as Priorities }));
   };
@@ -218,7 +225,19 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
       category,
       isCompleted: false,
     };
-    dispatch(createTask({ task: newTask, date, weekId }));
+    if (edit) {
+      dispatch(
+        editTask({
+          task: newTask,
+          date,
+          weekId,
+          taskId: taskToEdit.id,
+          day: 'friday',
+        }),
+      );
+    } else {
+      dispatch(createTask({ task: newTask, date, weekId }));
+    }
     navigation.goBack();
   };
 
@@ -294,7 +313,7 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
       <CustomButton
         buttonStyles={styles.addButton}
         pressedStyles={styles.addButtonPressed}
-        text="Add"
+        text={edit ? 'Edit' : 'Add'}
         onPress={handleCreateTask}
       />
     </View>

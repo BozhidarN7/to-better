@@ -7,6 +7,11 @@ export type CreateTask = {
   weekId: string;
 };
 
+export type EditTask = CreateTask & {
+  taskId: string;
+  day: DayOfWeek;
+};
+
 export type UpdateTotalTasksCompleted = {
   weekId: string;
   increase: boolean;
