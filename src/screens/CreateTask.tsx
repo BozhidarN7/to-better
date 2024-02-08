@@ -1,15 +1,21 @@
 import { nanoid } from '@reduxjs/toolkit';
 import { Fragment, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { CustomButton, Dropdown } from '@/components/common';
 import { COLORS, ICON_GROUPS, TASK_RESTRICTIONS } from '@/constants';
 import { Categories, Priorities } from '@/enums';
-import { createTask } from '@/store/slices/task-slice';
+import { RootState } from '@/store';
+import {
+  createTask,
+  selectTaskByWeekIdAndDate,
+} from '@/store/slices/task-slice';
 import { DropDownOption } from '@/types';
 import { CreateTasksProps } from '@/types/navigator-types/root-stack-param-list';
 import { Task } from '@/types/tasks';
+
+type DropdownOptionsIds = 'priority' | 'category';
 
 const priorityOptions: DropDownOption[] = [
   {
@@ -110,15 +116,25 @@ const NUMBER_OF_DROPDOWNS = 2;
 
 export default function CreateTask({ route, navigation }: CreateTasksProps) {
   const dispatch = useDispatch();
+  const { date, weekId, edit, day, taskId } = route.params;
+  const taskToEdit =
+    useSelector<RootState, Task | undefined>((state) =>
+      selectTaskByWeekIdAndDate(
+        state.tasks,
+        weekId,
+        day || 'friday',
+        taskId || '',
+      ),
+    ) || ({} as Task);
+  const [formState, setFormState] = useState({
+    title: edit ? taskToEdit?.title : '',
+    description: edit ? taskToEdit?.description : '',
+    category: edit ? taskToEdit?.category : ('' as Categories),
+    priority: edit ? taskToEdit?.priority : ('' as Priorities),
+  });
   const [dropdownOpenStatuses, setDropdownOpenStatuses] = useState(
     Array(NUMBER_OF_DROPDOWNS).fill(0),
   );
-  const [formState, setFormState] = useState({
-    title: '',
-    description: '',
-    category: '' as Categories,
-    priority: '' as Priorities,
-  });
   const [errors, setErrors] = useState({
     title: {
       show: false,
@@ -137,7 +153,6 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
       message: 'Please select a category from the dropdown menu',
     },
   } as { [key: string]: { show: boolean; message: string } });
-  const { date, weekId } = route.params;
 
   const handleSelectPriority = (value: DropDownOption) => {
     setFormState((prev) => ({ ...prev, priority: value.value as Priorities }));
@@ -209,7 +224,7 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
 
   const allDropdowns = [
     {
-      id: 'priority',
+      id: 'priority' as DropdownOptionsIds,
       options: priorityOptions,
       onSelect: handleSelectPriority,
       defaultText: 'Select task priority',
@@ -219,7 +234,7 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
       },
     },
     {
-      id: 'category',
+      id: 'category' as DropdownOptionsIds,
       options: categoryOptions,
       onSelect: handleSelectCategory,
       defaultText: 'Select task category',
@@ -249,6 +264,7 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
         multiline
         placeholder="Description"
         placeholderTextColor={COLORS.SECONDARY_300}
+        value={formState.description}
         onChangeText={(value) =>
           setFormState((prev) => ({ ...prev, description: value }))
         }
@@ -266,6 +282,7 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
             onSelect={dropdownOptions.onSelect}
             outerIsOpen={dropdownOpenStatuses[index]}
             handleOuterIsOpen={handleDropdowns}
+            chosenValue={formState[dropdownOptions.id]}
           />
           {errors[dropdownOptions.id].show && (
             <Text style={styles.errorText}>

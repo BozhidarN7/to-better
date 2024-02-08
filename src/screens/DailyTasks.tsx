@@ -54,7 +54,7 @@ export default function DailyTasks({ route, navigation }: DailyTasksProps) {
         <FlatList
           data={currentDayTasks}
           renderItem={(item) => (
-            <Task taskInfo={item.item} weekId={weekId} day={day} />
+            <Task taskInfo={item.item} weekId={weekId} day={day} date={date} />
           )}
         />
       ) : (

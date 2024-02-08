@@ -1,4 +1,5 @@
 export {
+  selectTaskByWeekIdAndDate,
   tasksReducer,
   createTask,
   updateTotalTasksCompleted,

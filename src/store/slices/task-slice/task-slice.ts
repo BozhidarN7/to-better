@@ -2,11 +2,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { DAYS_OF_THE_WEEK } from '@/constants';
 import { tasksState } from '@/store/state';
+import { DayOfWeek } from '@/types';
 import {
   CreateTask,
   UpdateTaskCompletionStatus,
   UpdateTotalTasksCompleted,
 } from '@/types/payload-types/task-slice-payload-types';
+import { TasksState } from '@/types/tasks';
 import { getDateAndMonth } from '@/utils';
 
 const tasksSlice = createSlice({
@@ -71,6 +73,16 @@ const tasksSlice = createSlice({
     },
   },
 });
+
+export const selectTaskByWeekIdAndDate = (
+  state: TasksState[],
+  weekId: string,
+  day: DayOfWeek,
+  taskId: string,
+) =>
+  state
+    .find((week) => week.id === weekId)
+    ?.tasks[day].find((task) => task.id === taskId);
 
 export const {
   createTask,

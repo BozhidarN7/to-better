@@ -26,6 +26,7 @@ interface DropdownProps {
   outerIsOpen?: boolean;
   handleOuterIsOpen?: (index: number) => void;
   index: number;
+  chosenValue: string;
 }
 
 export default function Dropdown({
@@ -36,10 +37,11 @@ export default function Dropdown({
   index,
   outerIsOpen,
   handleOuterIsOpen,
+  chosenValue,
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<DropDownOption | null>(
-    null,
+    options.find((option) => option.value === chosenValue) || null,
   );
 
   const toggleDropdown = () => {

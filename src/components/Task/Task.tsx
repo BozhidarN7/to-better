@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -16,9 +17,11 @@ interface TaskProps {
   taskInfo: TaskType;
   weekId: string;
   day: string;
+  date: number;
 }
 
-export default function Task({ taskInfo, weekId, day }: TaskProps) {
+export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const [isTaskComplted, setIsTaskComplted] = useState(taskInfo.isCompleted);
 
@@ -62,7 +65,14 @@ export default function Task({ taskInfo, weekId, day }: TaskProps) {
           icon="edit"
           size={24}
           color={COLORS.SECONDARY_100}
-          onPress={() => {}}
+          onPress={() =>
+            navigation.navigate(
+              ...([
+                'CreateTasks',
+                { date, weekId, day, taskId: taskInfo.id, edit: true },
+              ] as never),
+            )
+          }
         />
         <IconButton
           iconGroup={ICON_GROUPS.FontAwesome}
