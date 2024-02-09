@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { IconButton } from '@/components/common';
 import { COLORS, ICON_GROUPS } from '@/constants';
 import {
+  deleteTask,
   updateTaskCompletionStatus,
   updateTotalTasksCompleted,
 } from '@/store/slices/task-slice';
@@ -51,7 +52,15 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
         },
         {
           text: 'Delete',
-          onPress: () => {},
+          onPress: () => {
+            dispatch(
+              deleteTask({
+                weekId,
+                day: day as DayOfWeek,
+                taskId: taskInfo.id,
+              }),
+            );
+          },
         },
       ],
       { cancelable: true },
