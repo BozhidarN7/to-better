@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { IconButton } from '@/components/common';
@@ -40,7 +40,23 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
     });
   };
 
-  const handleDeleteTask = () => {};
+  const handleDeleteTask = () => {
+    Alert.alert(
+      'Delete Task',
+      'Are you sure you want to delete this task',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: () => {},
+        },
+      ],
+      { cancelable: true },
+    );
+  };
 
   return (
     <View style={styles.container}>
