@@ -12,6 +12,8 @@ export type EditTask = CreateTask & {
   day: DayOfWeek;
 };
 
+export type DeleteTask = Pick<EditTask, 'taskId' | 'day' | 'weekId'>;
+
 export type UpdateTotalTasksCompleted = {
   weekId: string;
   increase: boolean;

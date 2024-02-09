@@ -5,6 +5,7 @@ import { tasksState } from '@/store/state';
 import { DayOfWeek } from '@/types';
 import {
   CreateTask,
+  DeleteTask,
   EditTask,
   UpdateTaskCompletionStatus,
   UpdateTotalTasksCompleted,
@@ -51,6 +52,27 @@ const tasksSlice = createSlice({
       }
 
       weeklyTasks.tasks[day][taskToEditIndex] = task;
+    },
+    deleteTask(state, action: PayloadAction<DeleteTask>) {
+      const { weekId, day, taskId } = action.payload;
+
+      const weeklyTasks = state.find(
+        (weeklyTasks) => weeklyTasks.id === weekId,
+      );
+
+      if (!weeklyTasks) {
+        return state;
+      }
+
+      const taskToEditIndex = weeklyTasks.tasks[day].findIndex(
+        (task: Task) => task.id === taskId,
+      );
+
+      if (!taskToEditIndex) {
+        return state;
+      }
+
+      weeklyTasks.tasks[day].splice(taskToEditIndex, 1);
     },
     updateTotalTasksCompleted(
       state,
@@ -105,6 +127,7 @@ export const selectTaskByWeekIdAndDate = (
 
 export const {
   createTask,
+  deleteTask,
   editTask,
   updateTaskCompletionStatus,
   updateTotalTasksCompleted,

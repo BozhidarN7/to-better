@@ -2,6 +2,7 @@ export {
   selectTaskByWeekIdAndDate,
   tasksReducer,
   createTask,
+  deleteTask,
   editTask,
   updateTotalTasksCompleted,
   updateTaskCompletionStatus,
