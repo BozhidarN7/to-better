@@ -39,6 +39,9 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
       return newValue;
     });
   };
+
+  const handleDeleteTask = () => {};
+
   return (
     <View style={styles.container}>
       <View
@@ -61,6 +64,13 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
       </View>
       <View style={styles.taskOperationsContainer}>
         <IconButton
+          iconGroup={ICON_GROUPS.FontAwesome}
+          icon={isTaskComplted ? 'check-circle' : 'circle-thin'}
+          size={24}
+          color={isTaskComplted ? COLORS.COMPELTED : COLORS.SECONDARY_100}
+          onPress={checkButtonHandler}
+        />
+        <IconButton
           iconGroup={ICON_GROUPS.MaterialIcons}
           icon="edit"
           size={24}
@@ -75,11 +85,11 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
           }
         />
         <IconButton
-          iconGroup={ICON_GROUPS.FontAwesome}
-          icon={isTaskComplted ? 'check-circle' : 'circle-thin'}
+          iconGroup={ICON_GROUPS.MaterialIcons}
+          icon="delete"
           size={24}
-          color={isTaskComplted ? COLORS.COMPELTED : COLORS.SECONDARY_100}
-          onPress={checkButtonHandler}
+          color={COLORS.ERROR}
+          onPress={handleDeleteTask}
         />
       </View>
     </View>
