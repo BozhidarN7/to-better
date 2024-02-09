@@ -68,10 +68,14 @@ const tasksSlice = createSlice({
         (task: Task) => task.id === taskId,
       );
 
-      if (!taskToEditIndex) {
+      if (taskToEditIndex === -1) {
         return state;
       }
 
+      if (weeklyTasks.tasks[day][taskToEditIndex].isCompleted) {
+        weeklyTasks.tasksCompleted -= 1;
+      }
+      weeklyTasks.totalTasks -= 1;
       weeklyTasks.tasks[day].splice(taskToEditIndex, 1);
     },
     updateTotalTasksCompleted(
