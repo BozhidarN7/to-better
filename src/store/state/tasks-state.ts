@@ -45,6 +45,34 @@ const tasksState: TasksState[] = [
       sunday: [],
     },
   },
+  {
+    id: 'week2',
+    sevenDaysPeriod: {
+      startDate: '22.01.2024',
+      endDate: '29.01.2024',
+    },
+    totalTasks: 1,
+    tasksCompleted: 0,
+    tasks: {
+      monday: [],
+      tuesday: [
+        {
+          id: 'task1',
+          title: 'Fix the doors',
+          description:
+            'Two of the doors have problems with the closing Two of the doors have problems with the closing',
+          category: Categories.Home,
+          priority: Priorities.Medium,
+          isCompleted: false,
+        },
+      ],
+      wednesday: [],
+      thursday: [],
+      friday: [],
+      saturday: [],
+      sunday: [],
+    },
+  },
 ];
 
 export default tasksState;
