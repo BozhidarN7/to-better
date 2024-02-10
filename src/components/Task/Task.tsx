@@ -76,8 +76,8 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
         ]}
       />
       <View style={styles.taskContent}>
-        <Text>{taskInfo.title}</Text>
-        <Text>{taskInfo.description}</Text>
+        <Text style={styles.titleText}>{taskInfo.title}</Text>
+        <Text style={styles.descriptionText}>{taskInfo.description}</Text>
         <Text
           style={[
             styles.categoryText,
@@ -142,6 +142,14 @@ const styles = StyleSheet.create({
   taskContent: {
     flex: 1,
     rowGap: 5,
+    marginRight: 10,
+  },
+  descriptionText: {
+    textAlign: 'justify',
+  },
+  titleText: {
+    fontSize: 17,
+    fontWeight: 'bold',
   },
   categoryText: {
     fontSize: 12,
