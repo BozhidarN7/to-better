@@ -6,7 +6,7 @@ import { TasksState } from '@/types/tasks';
 import {
   calculateTasksProgress,
   getCompletedTasksCount,
-  getDateAndMonth,
+  isToday,
   padToTwoDigits,
 } from '@/utils';
 
@@ -18,7 +18,7 @@ export default function WeeklyDays({ tasksData }: WeeklyDaysProps) {
   const navigation = useNavigation();
 
   const { tasks, sevenDaysPeriod } = tasksData;
-  const [date, month] = getDateAndMonth(sevenDaysPeriod.startDate)
+  const [date, month, year] = sevenDaysPeriod.startDate
     .split('.')
     .map((el) => Number(el));
 
@@ -44,7 +44,11 @@ export default function WeeklyDays({ tasksData }: WeeklyDaysProps) {
   return DAYS_OF_THE_WEEK.map((day, index) => (
     <Pressable
       key={day}
-      style={({ pressed }) => [styles.root, pressed && styles.pressed]}
+      style={({ pressed }) => [
+        styles.root,
+        isToday(new Date(year, month - 1, date + index)) && styles.today,
+        pressed && styles.pressed,
+      ]}
       onPress={() =>
         handleOpenSingleDayTasks({
           day,
@@ -54,7 +58,7 @@ export default function WeeklyDays({ tasksData }: WeeklyDaysProps) {
         })
       }
     >
-      <View style={styles.singleDayContainer}>
+      <View style={[styles.singleDayContainer]}>
         <View>
           <Text style={styles.singleDayTitle}>
             {day}{' '}
@@ -97,5 +101,8 @@ const styles = StyleSheet.create({
   },
   taskStatus: {
     fontSize: 12,
+  },
+  today: {
+    backgroundColor: COLORS.SECONDARY_25,
   },
 });

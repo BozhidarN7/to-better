@@ -48,8 +48,8 @@ const tasksState: TasksState[] = [
   {
     id: 'week2',
     sevenDaysPeriod: {
-      startDate: '22.01.2024',
-      endDate: '29.01.2024',
+      startDate: '05.02.2024',
+      endDate: '11.02.2024',
     },
     totalTasks: 1,
     tasksCompleted: 0,
