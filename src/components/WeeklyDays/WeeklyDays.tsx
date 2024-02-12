@@ -103,6 +103,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   today: {
-    backgroundColor: COLORS.SECONDARY_25,
+    backgroundColor: COLORS.SECONDARY_50,
   },
 });
