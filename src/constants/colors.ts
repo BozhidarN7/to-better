@@ -14,7 +14,6 @@ export default {
 
   ACCENT_100: '#f1addc',
   ACCENT_300: '#e995c6',
-  ACCENT_400: '#e785be',
 
   COMPELTED: '#6cb100',
   ERROR: '#e91c1c',
