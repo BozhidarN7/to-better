@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CustomButton, Dropdown } from '@/components/common';
 import { COLORS, ICON_GROUPS, TASK_RESTRICTIONS } from '@/constants';
 import { Categories, Priorities } from '@/enums';
+import { useCreateTaskMutation } from '@/services';
 import { RootState } from '@/store';
 import {
   createTask,
@@ -117,6 +118,7 @@ const NUMBER_OF_DROPDOWNS = 2;
 
 export default function CreateTask({ route, navigation }: CreateTasksProps) {
   const dispatch = useDispatch();
+  const [createTasks] = useCreateTaskMutation();
   const { date, weekId, edit, day, taskId } = route.params;
   const taskToEdit =
     useSelector<RootState, Task | undefined>((state) =>
@@ -238,6 +240,7 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
       );
     } else {
       dispatch(createTask({ task: newTask, date, weekId }));
+      createTasks({ task: newTask, day: 'wednesday', weekId });
     }
     navigation.goBack();
   };

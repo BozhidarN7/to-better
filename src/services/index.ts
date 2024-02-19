@@ -1,1 +1,1 @@
-export { useGetTasksQuery } from './tasks';
+export { useGetTasksQuery, useCreateTaskMutation } from './tasks';
