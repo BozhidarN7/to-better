@@ -18,7 +18,7 @@ export const tasksApi = createApi({
         console.log(day);
         console.log(task);
         return {
-          url: `tasks.json`,
+          url: 'tasks.json',
           method: 'POST',
           body: { [`1/tasks/wednesday`]: task },
         };
