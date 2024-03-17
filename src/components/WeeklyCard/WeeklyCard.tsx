@@ -5,11 +5,11 @@ import { WeeklyDays } from '../WeeklyDays';
 import { IconButton, ProgressBar } from '../common';
 
 import { ICON_GROUPS } from '@/constants';
-import { TasksState } from '@/types/tasks';
+import { Week } from '@/types/tasks';
 import { calculateTasksProgress, getDateAndMonth } from '@/utils';
 
 interface WeeklyCardProps {
-  tasksData: TasksState;
+  tasksData: Week;
 }
 
 export default function WeeklyCard({ tasksData }: WeeklyCardProps) {

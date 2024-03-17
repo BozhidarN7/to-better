@@ -1,28 +1,23 @@
-import { useMemo } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSuspenseQuery } from '@apollo/client';
+import { Suspense, useMemo } from 'react';
+import { FlatList, StyleSheet, Text } from 'react-native';
 
 import { WeeklyCard } from '@/components/WeeklyCard';
-import { RootState } from '@/store';
-import { TasksState } from '@/types/tasks';
+import { GET_WEEKS } from '@/gql/queries';
 import { createDate } from '@/utils';
 
-export default function AllTasks() {
-  const tasksState = useSelector<RootState, TasksState[]>(
-    (state) => state.tasks,
-  );
+function WeeksList() {
+  const { data } = useSuspenseQuery(GET_WEEKS);
 
-  const orderedByWeeksDescending = useMemo(
-    () =>
-      tasksState
-        .map((week) => week)
-        .sort(
-          (a, b) =>
-            createDate(b.sevenDaysPeriod.startDate)!.valueOf() -
-            createDate(a.sevenDaysPeriod.startDate)!.valueOf(),
-        ),
-    [tasksState],
-  );
+  const orderedByWeeksDescending = useMemo(() => {
+    return data.weeks
+      .map((week) => week)
+      .sort(
+        (a, b) =>
+          createDate(b.sevenDaysPeriod.startDate)!.valueOf() -
+          createDate(a.sevenDaysPeriod.startDate)!.valueOf(),
+      );
+  }, [data.weeks]);
 
   return (
     <FlatList
@@ -30,6 +25,14 @@ export default function AllTasks() {
       data={orderedByWeeksDescending}
       renderItem={(item) => <WeeklyCard tasksData={item.item} />}
     />
+  );
+}
+
+export default function AllTasks() {
+  return (
+    <Suspense fallback={<Text>Loading...</Text>}>
+      <WeeksList />
+    </Suspense>
   );
 }
 

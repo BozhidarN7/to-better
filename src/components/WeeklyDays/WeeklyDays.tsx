@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { COLORS, DAYS_OF_THE_WEEK } from '@/constants';
-import { TasksState } from '@/types/tasks';
+import { Week } from '@/types/tasks';
 import {
   calculateTasksProgress,
   getCompletedTasksCount,
@@ -11,7 +11,7 @@ import {
 } from '@/utils';
 
 interface WeeklyDaysProps {
-  tasksData: TasksState;
+  tasksData: Week;
 }
 
 export default function WeeklyDays({ tasksData }: WeeklyDaysProps) {
@@ -54,7 +54,7 @@ export default function WeeklyDays({ tasksData }: WeeklyDaysProps) {
           day,
           currDay: date + index,
           currMonth: month,
-          weekId: tasksData.id,
+          weekId: tasksData._id,
         })
       }
     >
