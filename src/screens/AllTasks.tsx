@@ -1,8 +1,9 @@
 import { useSuspenseQuery } from '@apollo/client';
 import { Suspense, useMemo } from 'react';
-import { FlatList, StyleSheet, Text } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 
 import { WeeklyCard } from '@/components/WeeklyCard';
+import { WeeklyCardPlaceholder } from '@/components/WeeklyCardPlaceholder';
 import { GET_WEEKS } from '@/gql/queries';
 import { createDate } from '@/utils';
 
@@ -30,7 +31,7 @@ function WeeksList() {
 
 export default function AllTasks() {
   return (
-    <Suspense fallback={<Text>Loading...</Text>}>
+    <Suspense fallback={<WeeklyCardPlaceholder />}>
       <WeeksList />
     </Suspense>
   );
