@@ -1,4 +1,5 @@
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { API_URL } from '@env';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
@@ -12,8 +13,9 @@ import { RootStackParamList } from '@/types/navigator-types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+console.log('API_URL', API_URL);
 const client = new ApolloClient({
-  uri: 'https://109a-84-22-18-21.ngrok-free.app',
+  uri: API_URL,
   cache: new InMemoryCache(),
 });
 
