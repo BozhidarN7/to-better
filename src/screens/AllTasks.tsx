@@ -1,13 +1,16 @@
 import { useSuspenseQuery } from '@apollo/client';
-import { Suspense, useMemo } from 'react';
+import { Suspense, useEffect, useMemo } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import { WeeklyCard } from '@/components/WeeklyCard';
 import { WeeklyCardPlaceholder } from '@/components/WeeklyCardPlaceholder';
 import { GET_WEEKS } from '@/gql/queries';
+import { addTasks } from '@/store/slices/task-slice';
 import { createDate } from '@/utils';
 
 function WeeksList() {
+  const dispatch = useDispatch();
   const { data } = useSuspenseQuery(GET_WEEKS);
 
   const orderedByWeeksDescending = useMemo(() => {
@@ -19,6 +22,10 @@ function WeeksList() {
           createDate(a.sevenDaysPeriod.startDate)!.valueOf(),
       );
   }, [data.weeks]);
+
+  useEffect(() => {
+    dispatch(addTasks({ tasks: data.weeks }));
+  }, [data.weeks, dispatch]);
 
   return (
     <FlatList

@@ -20,7 +20,7 @@ export default function DailyTasks({ route, navigation }: DailyTasksProps) {
   const tasksState = useSelector<RootState, TasksState[]>(
     (state) => state.tasks,
   );
-  const week = tasksState.find((weeks) => weeks.id === weekId);
+  const week = tasksState.find((weeks) => weeks._id === weekId);
   const dayOfTheWeekIndex =
     date -
     Number(

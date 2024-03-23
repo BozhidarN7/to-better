@@ -1,7 +1,7 @@
 import Task from './task';
 
 interface TasksState {
-  id: string;
+  _id: string;
   sevenDaysPeriod: {
     startDate: string;
     endDate: string;

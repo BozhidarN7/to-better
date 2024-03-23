@@ -1,5 +1,9 @@
 import DayOfWeek from '../day-of-week';
-import { Task } from '../tasks';
+import { Task, Week } from '../tasks';
+
+export type AddTasks = {
+  tasks: Week[];
+};
 
 export type CreateTask = {
   task: Task;

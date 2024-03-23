@@ -1,6 +1,7 @@
 export {
   selectTaskByWeekIdAndDate,
   tasksReducer,
+  addTasks,
   createTask,
   deleteTask,
   editTask,

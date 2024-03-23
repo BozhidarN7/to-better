@@ -4,6 +4,7 @@ import { DAYS_OF_THE_WEEK } from '@/constants';
 import { tasksState } from '@/store/state';
 import { DayOfWeek } from '@/types';
 import {
+  AddTasks,
   CreateTask,
   DeleteTask,
   EditTask,
@@ -17,10 +18,14 @@ const tasksSlice = createSlice({
   name: 'tasks',
   initialState: tasksState,
   reducers: {
+    addTasks(state, action: PayloadAction<AddTasks>) {
+      const { tasks } = action.payload;
+      state.push(...tasks);
+    },
     createTask(state, action: PayloadAction<CreateTask>) {
       const { task, date, weekId } = action.payload;
       const weeklyTasks = state.find(
-        (weeklyTasks) => weeklyTasks.id === weekId,
+        (weeklyTasks) => weeklyTasks._id === weekId,
       );
 
       if (!weeklyTasks) {
@@ -38,7 +43,7 @@ const tasksSlice = createSlice({
     editTask(state, action: PayloadAction<EditTask>) {
       const { task, weekId, taskId, day } = action.payload;
       const weeklyTasks = state.find(
-        (weeklyTasks) => weeklyTasks.id === weekId,
+        (weeklyTasks) => weeklyTasks._id === weekId,
       );
       if (!weeklyTasks) {
         return state;
@@ -57,7 +62,7 @@ const tasksSlice = createSlice({
       const { weekId, day, taskId } = action.payload;
 
       const weeklyTasks = state.find(
-        (weeklyTasks) => weeklyTasks.id === weekId,
+        (weeklyTasks) => weeklyTasks._id === weekId,
       );
 
       if (!weeklyTasks) {
@@ -84,7 +89,7 @@ const tasksSlice = createSlice({
     ) {
       const { weekId, increase } = action.payload;
       const weeklyTasks = state.find(
-        (weeklyTasks) => weeklyTasks.id === weekId,
+        (weeklyTasks) => weeklyTasks._id === weekId,
       );
 
       if (!weeklyTasks) {
@@ -101,7 +106,7 @@ const tasksSlice = createSlice({
     ) {
       const { weekId, day, taskId } = action.payload;
       const weeklyTasks = state.find(
-        (weeklyTasks) => weeklyTasks.id === weekId,
+        (weeklyTasks) => weeklyTasks._id === weekId,
       );
 
       if (!weeklyTasks) {
@@ -126,10 +131,11 @@ export const selectTaskByWeekIdAndDate = (
   taskId: string,
 ) =>
   state
-    .find((week) => week.id === weekId)
+    .find((week) => week._id === weekId)
     ?.tasks[day].find((task) => task.id === taskId);
 
 export const {
+  addTasks,
   createTask,
   deleteTask,
   editTask,

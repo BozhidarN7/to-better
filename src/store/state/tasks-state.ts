@@ -3,7 +3,7 @@ import { TasksState } from '@/types/tasks';
 
 const tasksState: TasksState[] = [
   {
-    id: 'week1',
+    _id: 'week1',
     sevenDaysPeriod: {
       startDate: '15.01.2024',
       endDate: '21.01.2024',
@@ -46,7 +46,7 @@ const tasksState: TasksState[] = [
     },
   },
   {
-    id: 'week2',
+    _id: 'week2',
     sevenDaysPeriod: {
       startDate: '05.02.2024',
       endDate: '11.02.2024',
