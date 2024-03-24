@@ -49,7 +49,7 @@ const tasksSlice = createSlice({
         return state;
       }
       const taskToEditIndex = weeklyTasks.tasks[day].findIndex(
-        (task: Task) => task.id === taskId,
+        (task: Task) => task._id === taskId,
       );
 
       if (taskToEditIndex === -1) {
@@ -70,7 +70,7 @@ const tasksSlice = createSlice({
       }
 
       const taskToEditIndex = weeklyTasks.tasks[day].findIndex(
-        (task: Task) => task.id === taskId,
+        (task: Task) => task._id === taskId,
       );
 
       if (taskToEditIndex === -1) {
@@ -113,7 +113,7 @@ const tasksSlice = createSlice({
         return state;
       }
 
-      const task = weeklyTasks.tasks[day].find((task) => task.id === taskId);
+      const task = weeklyTasks.tasks[day].find((task) => task._id === taskId);
 
       if (!task) {
         return state;
@@ -132,7 +132,7 @@ export const selectTaskByWeekIdAndDate = (
 ) =>
   state
     .find((week) => week._id === weekId)
-    ?.tasks[day].find((task) => task.id === taskId);
+    ?.tasks[day].find((task) => task._id === taskId);
 
 export const {
   addTasks,

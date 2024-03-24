@@ -1,15 +1,16 @@
+import { useMutation } from '@apollo/client';
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { IconButton } from '@/components/common';
 import { COLORS, ICON_GROUPS } from '@/constants';
 import {
-  deleteTask,
-  updateTaskCompletionStatus,
-  updateTotalTasksCompleted,
-} from '@/store/slices/task-slice';
+  UPDATE_TASK_COMPLETION_STATUS,
+  UPDATE_TOTAL_TASKS_COMPLETED,
+} from '@/gql/mutations';
+import { deleteTask } from '@/store/slices/task-slice';
 import { DayOfWeek } from '@/types';
 import { Task as TaskType } from '@/types/tasks';
 import { getTaskCategoryColor, getTaskPriorityColor } from '@/utils';
@@ -22,22 +23,42 @@ interface TaskProps {
 }
 
 export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
+  const [
+    updateTaskCompletionStatus,
+    { data, loading: updateTaskCompletionStatusLoading, error },
+  ] = useMutation(UPDATE_TASK_COMPLETION_STATUS);
+  const [updateTotalTasksCompleted] = useMutation(UPDATE_TOTAL_TASKS_COMPLETED);
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [isTaskComplted, setIsTaskComplted] = useState(taskInfo.isCompleted);
+  const isTaskCompleted = useMemo(() => {
+    if (error) {
+      Alert.alert('Something went wrong', 'Please try again');
+    }
+
+    if (data) {
+      return data.editTask.success
+        ? data.editTask.task.isCompleted
+        : Alert.alert('Something went wrong', data.editTask.message);
+    }
+
+    return taskInfo.isCompleted;
+  }, [data, error, taskInfo.isCompleted]);
 
   const checkButtonHandler = () => {
-    setIsTaskComplted((prev) => {
-      const newValue = !prev;
-      dispatch(updateTotalTasksCompleted({ weekId, increase: newValue }));
-      dispatch(
-        updateTaskCompletionStatus({
-          weekId,
-          day: day as DayOfWeek,
-          taskId: taskInfo.id,
-        }),
-      );
-      return newValue;
+    updateTaskCompletionStatus({
+      variables: {
+        taskId: taskInfo._id,
+        task: {
+          isCompleted: !isTaskCompleted,
+        },
+      },
+    });
+    updateTotalTasksCompleted({
+      variables: {
+        weekId,
+        increase: !isTaskCompleted,
+      },
     });
   };
 
@@ -57,7 +78,7 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
               deleteTask({
                 weekId,
                 day: day as DayOfWeek,
-                taskId: taskInfo.id,
+                taskId: taskInfo._id,
               }),
             );
           },
@@ -66,6 +87,11 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
       { cancelable: true },
     );
   };
+
+  if (updateTaskCompletionStatusLoading) {
+    // TODO Show placeholder
+    return <></>;
+  }
 
   return (
     <View style={styles.container}>
@@ -90,9 +116,9 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
       <View style={styles.taskOperationsContainer}>
         <IconButton
           iconGroup={ICON_GROUPS.FontAwesome}
-          icon={isTaskComplted ? 'check-circle' : 'circle-thin'}
+          icon={isTaskCompleted ? 'check-circle' : 'circle-thin'}
           size={24}
-          color={isTaskComplted ? COLORS.COMPELTED : COLORS.SECONDARY_100}
+          color={isTaskCompleted ? COLORS.COMPELTED : COLORS.SECONDARY_100}
           onPress={checkButtonHandler}
         />
         <IconButton
@@ -104,7 +130,7 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
             navigation.navigate(
               ...([
                 'CreateTasks',
-                { date, weekId, day, taskId: taskInfo.id, edit: true },
+                { date, weekId, day, taskId: taskInfo._id, edit: true },
               ] as never),
             )
           }
