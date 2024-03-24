@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { WeeklyCard } from '@/components/WeeklyCard';
 import { WeeklyCardPlaceholder } from '@/components/WeeklyCardPlaceholder';
 import { GET_WEEKS } from '@/gql/queries';
-import { addTasks } from '@/store/slices/task-slice';
+import { initializeTasks } from '@/store/slices/task-slice';
 import { createDate } from '@/utils';
 
 function WeeksList() {
@@ -24,7 +24,7 @@ function WeeksList() {
   }, [data.weeks]);
 
   useEffect(() => {
-    dispatch(addTasks({ tasks: data.weeks }));
+    dispatch(initializeTasks({ tasks: data.weeks }));
   }, [data.weeks, dispatch]);
 
   return (

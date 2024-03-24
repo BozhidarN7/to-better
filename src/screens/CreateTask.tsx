@@ -218,21 +218,23 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
     }
 
     const newTask: Task = {
-      id: nanoid(),
+      _id: nanoid(),
       title,
       description,
       priority,
       category,
       isCompleted: false,
+      dayOfWeek: day || 'friday',
+      weekId,
     };
 
     if (edit) {
       dispatch(
         editTask({
-          task: { ...newTask, id: taskToEdit.id },
+          task: { ...newTask, _id: taskToEdit._id },
           date,
           weekId,
-          taskId: taskToEdit.id,
+          taskId: taskToEdit._id,
           day: 'friday',
         }),
       );

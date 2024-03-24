@@ -18,9 +18,10 @@ const tasksSlice = createSlice({
   name: 'tasks',
   initialState: tasksState,
   reducers: {
-    addTasks(state, action: PayloadAction<AddTasks>) {
+    initializeTasks(state, action: PayloadAction<AddTasks>) {
       const { tasks } = action.payload;
-      state.push(...tasks);
+      state = [...tasks];
+      return state;
     },
     createTask(state, action: PayloadAction<CreateTask>) {
       const { task, date, weekId } = action.payload;
@@ -135,7 +136,7 @@ export const selectTaskByWeekIdAndDate = (
     ?.tasks[day].find((task) => task._id === taskId);
 
 export const {
-  addTasks,
+  initializeTasks,
   createTask,
   deleteTask,
   editTask,
