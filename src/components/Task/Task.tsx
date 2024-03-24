@@ -14,6 +14,7 @@ import { deleteTask } from '@/store/slices/task-slice';
 import { DayOfWeek } from '@/types';
 import { Task as TaskType } from '@/types/tasks';
 import { getTaskCategoryColor, getTaskPriorityColor } from '@/utils';
+import { TaskPlaceholder } from '../TaskPlaceholder';
 
 interface TaskProps {
   taskInfo: TaskType;
@@ -27,7 +28,10 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
     updateTaskCompletionStatus,
     { data, loading: updateTaskCompletionStatusLoading, error },
   ] = useMutation(UPDATE_TASK_COMPLETION_STATUS);
-  const [updateTotalTasksCompleted] = useMutation(UPDATE_TOTAL_TASKS_COMPLETED);
+  const [
+    updateTotalTasksCompleted,
+    { loading: updateTotalTasksCompletedLoading },
+  ] = useMutation(UPDATE_TOTAL_TASKS_COMPLETED);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -88,9 +92,8 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
     );
   };
 
-  if (updateTaskCompletionStatusLoading) {
-    // TODO Show placeholder
-    return <></>;
+  if (updateTaskCompletionStatusLoading || updateTotalTasksCompletedLoading) {
+    return <TaskPlaceholder />;
   }
 
   return (
