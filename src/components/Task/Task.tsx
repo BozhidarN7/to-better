@@ -4,6 +4,8 @@ import { useMemo } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
+import { TaskPlaceholder } from '../TaskPlaceholder';
+
 import { IconButton } from '@/components/common';
 import { COLORS, ICON_GROUPS } from '@/constants';
 import {
@@ -14,7 +16,6 @@ import { deleteTask } from '@/store/slices/task-slice';
 import { DayOfWeek } from '@/types';
 import { Task as TaskType } from '@/types/tasks';
 import { getTaskCategoryColor, getTaskPriorityColor } from '@/utils';
-import { TaskPlaceholder } from '../TaskPlaceholder';
 
 interface TaskProps {
   taskInfo: TaskType;

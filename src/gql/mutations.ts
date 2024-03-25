@@ -27,3 +27,33 @@ export const UPDATE_TOTAL_TASKS_COMPLETED = gql`
     }
   }
 `;
+
+export const CREATE_TASK = gql`
+  mutation CreateTask(
+    $weekId: ID!
+    $dayOfWeek: DayOfWeek!
+    $task: CreateTaskInput!
+  ) {
+    createTask(weekId: $weekId, dayOfWeek: $dayOfWeek, task: $task) {
+      code
+      success
+      message
+      task {
+        _id
+      }
+    }
+  }
+`;
+
+export const EDIT_TASK = gql`
+  mutation EditTask($taskId: ID!, $task: EditTaskInput!) {
+    editTask(taskId: $taskId, task: $task) {
+      success
+      message
+      code
+      task {
+        _id
+      }
+    }
+  }
+`;

@@ -1,17 +1,15 @@
-import { nanoid } from '@reduxjs/toolkit';
+import { useMutation } from '@apollo/client';
 import { Fragment, useLayoutEffect, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { CustomButton, Dropdown } from '@/components/common';
 import { COLORS, ICON_GROUPS, TASK_RESTRICTIONS } from '@/constants';
 import { Categories, Priorities } from '@/enums';
+import { CREATE_TASK, EDIT_TASK } from '@/gql/mutations';
+import { GET_WEEKS } from '@/gql/queries';
 import { RootState } from '@/store';
-import {
-  createTask,
-  editTask,
-  selectTaskByWeekIdAndDate,
-} from '@/store/slices/task-slice';
+import { selectTaskByWeekIdAndDate } from '@/store/slices/task-slice';
 import { DropDownOption } from '@/types';
 import { CreateTasksProps } from '@/types/navigator-types/root-stack-param-list';
 import { Task } from '@/types/tasks';
@@ -116,8 +114,14 @@ const categoryOptions: DropDownOption[] = [
 const NUMBER_OF_DROPDOWNS = 2;
 
 export default function CreateTask({ route, navigation }: CreateTasksProps) {
-  const dispatch = useDispatch();
-  const { date, weekId, edit, day, taskId } = route.params;
+  const [createTask] = useMutation(CREATE_TASK, {
+    refetchQueries: [GET_WEEKS, 'GetWeeks'],
+  });
+  const [editTask] = useMutation(EDIT_TASK, {
+    refetchQueries: [GET_WEEKS, 'GetWeeks'],
+  });
+
+  const { weekId, edit, day, taskId } = route.params;
   const taskToEdit =
     useSelector<RootState, Task | undefined>((state) =>
       selectTaskByWeekIdAndDate(
@@ -130,8 +134,8 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
   const [formState, setFormState] = useState({
     title: edit ? taskToEdit?.title : '',
     description: edit ? taskToEdit?.description : '',
-    category: edit ? taskToEdit?.category : ('' as Categories),
-    priority: edit ? taskToEdit?.priority : ('' as Priorities),
+    category: edit ? taskToEdit?.category.toLowerCase() : ('' as Categories),
+    priority: edit ? taskToEdit?.priority.toLowerCase() : ('' as Priorities),
   });
   const [dropdownOpenStatuses, setDropdownOpenStatuses] = useState(
     Array(NUMBER_OF_DROPDOWNS).fill(0),
@@ -217,29 +221,28 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
       return;
     }
 
-    const newTask: Task = {
-      _id: nanoid(),
+    const newTask = {
       title,
       description,
-      priority,
-      category,
-      isCompleted: false,
-      dayOfWeek: day || 'friday',
-      weekId,
+      priority: priority.toUpperCase(),
+      category: category.toUpperCase(),
     };
 
     if (edit) {
-      dispatch(
-        editTask({
-          task: { ...newTask, _id: taskToEdit._id },
-          date,
-          weekId,
+      editTask({
+        variables: {
+          task: { ...newTask },
           taskId: taskToEdit._id,
-          day: 'friday',
-        }),
-      );
+        },
+      });
     } else {
-      dispatch(createTask({ task: newTask, date, weekId }));
+      createTask({
+        variables: {
+          weekId,
+          dayOfWeek: day?.toUpperCase() || 'FRIDAY',
+          task: newTask,
+        },
+      });
     }
     navigation.goBack();
   };

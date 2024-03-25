@@ -69,7 +69,7 @@ export default function DailyTasks({ route, navigation }: DailyTasksProps) {
           size={56}
           onPress={() => {
             navigation.navigate(
-              ...(['CreateTasks', { date, weekId }] as never),
+              ...(['CreateTasks', { date, weekId, day }] as never),
             );
           }}
           stylesOnPressed={styles.addButtonPressed}
