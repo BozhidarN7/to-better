@@ -57,3 +57,16 @@ export const EDIT_TASK = gql`
     }
   }
 `;
+
+export const DELETE_TASK = gql`
+  mutation DeleteTask($weekId: ID, $day: DayOfWeek, $taskId: ID) {
+    deleteTask(weekId: $weekId, day: $day, taskId: $taskId) {
+      success
+      message
+      code
+      task {
+        _id
+      }
+    }
+  }
+`;

@@ -2,18 +2,17 @@ import { useMutation } from '@apollo/client';
 import { useNavigation } from '@react-navigation/native';
 import { useMemo } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
-import { useDispatch } from 'react-redux';
 
 import { TaskPlaceholder } from '../TaskPlaceholder';
 
 import { IconButton } from '@/components/common';
 import { COLORS, ICON_GROUPS } from '@/constants';
 import {
+  DELETE_TASK,
   UPDATE_TASK_COMPLETION_STATUS,
   UPDATE_TOTAL_TASKS_COMPLETED,
 } from '@/gql/mutations';
-import { deleteTask } from '@/store/slices/task-slice';
-import { DayOfWeek } from '@/types';
+import { GET_WEEKS } from '@/gql/queries';
 import { Task as TaskType } from '@/types/tasks';
 import { getTaskCategoryColor, getTaskPriorityColor } from '@/utils';
 
@@ -25,6 +24,10 @@ interface TaskProps {
 }
 
 export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
+  const [deleteTask] = useMutation(DELETE_TASK, {
+    refetchQueries: [GET_WEEKS, 'GetWeeks'],
+  });
+
   const [
     updateTaskCompletionStatus,
     { data, loading: updateTaskCompletionStatusLoading, error },
@@ -35,7 +38,7 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
   ] = useMutation(UPDATE_TOTAL_TASKS_COMPLETED);
 
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+
   const isTaskCompleted = useMemo(() => {
     if (error) {
       Alert.alert('Something went wrong', 'Please try again');
@@ -79,13 +82,13 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
         {
           text: 'Delete',
           onPress: () => {
-            dispatch(
-              deleteTask({
+            deleteTask({
+              variables: {
                 weekId,
-                day: day as DayOfWeek,
+                day: day.toUpperCase(),
                 taskId: taskInfo._id,
-              }),
-            );
+              },
+            });
           },
         },
       ],
