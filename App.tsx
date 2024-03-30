@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { Provider } from 'react-redux';
 
+import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
 import { COLORS } from '@/constants';
 import { AllTasks, DailyTasks } from '@/screens';
 import CreateTask from '@/screens/CreateTask';
@@ -20,7 +21,7 @@ const client = new ApolloClient({
 
 export default function App() {
   return (
-    <>
+    <ErrorBoundary>
       <StatusBar />
       <ApolloProvider client={client}>
         <Provider store={store}>
@@ -53,6 +54,6 @@ export default function App() {
           </NavigationContainer>
         </Provider>
       </ApolloProvider>
-    </>
+    </ErrorBoundary>
   );
 }
