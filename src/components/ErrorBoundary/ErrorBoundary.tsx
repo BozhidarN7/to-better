@@ -2,6 +2,9 @@ import React from 'react';
 
 import { Fallback } from '../common';
 
+import { ErrorLevels } from '@/enums';
+import { logError } from '@/utils';
+
 interface ErrorBoundaryProps {
   children: React.ReactNode;
 }
@@ -22,8 +25,8 @@ class ErrorBoundary extends React.Component<
   static getDerivedStateFromError(_: Error) {
     return { hasError: true };
   }
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    // log error to an error reporting service
+  componentDidCatch(error: Error, _: React.ErrorInfo) {
+    logError(error, ErrorLevels.Error);
   }
 
   render(): React.ReactNode {

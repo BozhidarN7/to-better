@@ -1,13 +1,8 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
 import { Button, StyleSheet, Text, View } from 'react-native';
 
 import { COLORS } from '@/constants';
 
 export default function Fallback() {
-  const navigation = useNavigation();
-
-  console.log('to-better:navigation', navigation.navigate);
-
   return (
     <View style={styles.fallBackContainer}>
       <Text style={styles.fallbackHeading}>Oops!</Text>
