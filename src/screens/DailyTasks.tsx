@@ -2,6 +2,7 @@ import { useLayoutEffect, useMemo } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
 import { Task } from '@/components/Task';
 import { IconButton } from '@/components/common';
 import { COLORS, DAYS_OF_THE_WEEK, ICON_GROUPS } from '@/constants';
@@ -49,7 +50,7 @@ export default function DailyTasks({ route, navigation }: DailyTasksProps) {
   }, [currentDayTasks, date, day, month, navigation]);
 
   return (
-    <>
+    <ErrorBoundary>
       {hasTasks ? (
         <FlatList
           data={currentDayTasks}
@@ -75,7 +76,7 @@ export default function DailyTasks({ route, navigation }: DailyTasksProps) {
           stylesOnPressed={styles.addButtonPressed}
         />
       </View>
-    </>
+    </ErrorBoundary>
   );
 }
 

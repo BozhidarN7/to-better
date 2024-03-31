@@ -21,39 +21,41 @@ const client = new ApolloClient({
 
 export default function App() {
   return (
-    <ErrorBoundary>
+    <>
       <StatusBar />
       <ApolloProvider client={client}>
         <Provider store={store}>
           <NavigationContainer>
-            <Stack.Navigator
-              initialRouteName="AllTasks"
-              screenOptions={{
-                headerStyle: { backgroundColor: COLORS.SECONDARY_100 },
-                headerTintColor: COLORS.PRIMARY,
-              }}
-            >
-              <Stack.Screen
-                name="AllTasks"
-                component={AllTasks}
-                options={{
-                  title: 'All Tasks',
+            <ErrorBoundary>
+              <Stack.Navigator
+                initialRouteName="AllTasks"
+                screenOptions={{
+                  headerStyle: { backgroundColor: COLORS.SECONDARY_100 },
+                  headerTintColor: COLORS.PRIMARY,
                 }}
-              />
-              <Stack.Screen
-                name="DailyTasks"
-                component={DailyTasks}
-                initialParams={{ day: '' }}
-              />
-              <Stack.Screen
-                name="CreateTasks"
-                component={CreateTask}
-                options={{ title: 'Create Task' }}
-              />
-            </Stack.Navigator>
+              >
+                <Stack.Screen
+                  name="AllTasks"
+                  component={AllTasks}
+                  options={{
+                    title: 'All Tasks',
+                  }}
+                />
+                <Stack.Screen
+                  name="DailyTasks"
+                  component={DailyTasks}
+                  initialParams={{ day: '' }}
+                />
+                <Stack.Screen
+                  name="CreateTasks"
+                  component={CreateTask}
+                  options={{ title: 'Create Task' }}
+                />
+              </Stack.Navigator>
+            </ErrorBoundary>
           </NavigationContainer>
         </Provider>
       </ApolloProvider>
-    </ErrorBoundary>
+    </>
   );
 }

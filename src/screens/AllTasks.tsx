@@ -3,6 +3,7 @@ import { Suspense, useEffect, useMemo } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 
+import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
 import { WeeklyCard } from '@/components/WeeklyCard';
 import { WeeklyCardPlaceholder } from '@/components/WeeklyCardPlaceholder';
 import { GET_WEEKS } from '@/gql/queries';
@@ -38,9 +39,11 @@ function WeeksList() {
 
 export default function AllTasks() {
   return (
-    <Suspense fallback={<WeeklyCardPlaceholder />}>
-      <WeeksList />
-    </Suspense>
+    <ErrorBoundary>
+      <Suspense fallback={<WeeklyCardPlaceholder />}>
+        <WeeksList />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
 

@@ -3,6 +3,7 @@ import { Fragment, useLayoutEffect, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
 import { CustomButton, Dropdown } from '@/components/common';
 import { COLORS, ICON_GROUPS, TASK_RESTRICTIONS } from '@/constants';
 import { Categories, Priorities } from '@/enums';
@@ -271,58 +272,60 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
   ];
 
   return (
-    <View style={styles.root}>
-      <TextInput
-        style={styles.input}
-        placeholder="Title"
-        placeholderTextColor={COLORS.SECONDARY_300}
-        value={formState.title}
-        onChangeText={(value) =>
-          setFormState((prev) => ({ ...prev, title: value }))
-        }
-      />
-      {errors.title.show && (
-        <Text style={styles.errorText}>{errors.title.message}</Text>
-      )}
-      <TextInput
-        style={[styles.input, styles.multilineInput]}
-        multiline
-        placeholder="Description"
-        placeholderTextColor={COLORS.SECONDARY_300}
-        value={formState.description}
-        onChangeText={(value) =>
-          setFormState((prev) => ({ ...prev, description: value }))
-        }
-      />
-      {errors.description.show && (
-        <Text style={styles.errorText}>{errors.description.message}</Text>
-      )}
-      {allDropdowns.map((dropdownOptions, index) => (
-        <Fragment key={dropdownOptions.id}>
-          <Dropdown
-            index={index}
-            options={dropdownOptions.options}
-            defaultText={dropdownOptions.defaultText}
-            customStyles={dropdownOptions.customStyles}
-            onSelect={dropdownOptions.onSelect}
-            outerIsOpen={dropdownOpenStatuses[index]}
-            handleOuterIsOpen={handleDropdowns}
-            chosenValue={formState[dropdownOptions.id]}
-          />
-          {errors[dropdownOptions.id].show && (
-            <Text style={styles.errorText}>
-              {errors[dropdownOptions.id].message}
-            </Text>
-          )}
-        </Fragment>
-      ))}
-      <CustomButton
-        buttonStyles={styles.addButton}
-        pressedStyles={styles.addButtonPressed}
-        text={edit ? 'Edit' : 'Add'}
-        onPress={handleCreateTask}
-      />
-    </View>
+    <ErrorBoundary>
+      <View style={styles.root}>
+        <TextInput
+          style={styles.input}
+          placeholder="Title"
+          placeholderTextColor={COLORS.SECONDARY_300}
+          value={formState.title}
+          onChangeText={(value) =>
+            setFormState((prev) => ({ ...prev, title: value }))
+          }
+        />
+        {errors.title.show && (
+          <Text style={styles.errorText}>{errors.title.message}</Text>
+        )}
+        <TextInput
+          style={[styles.input, styles.multilineInput]}
+          multiline
+          placeholder="Description"
+          placeholderTextColor={COLORS.SECONDARY_300}
+          value={formState.description}
+          onChangeText={(value) =>
+            setFormState((prev) => ({ ...prev, description: value }))
+          }
+        />
+        {errors.description.show && (
+          <Text style={styles.errorText}>{errors.description.message}</Text>
+        )}
+        {allDropdowns.map((dropdownOptions, index) => (
+          <Fragment key={dropdownOptions.id}>
+            <Dropdown
+              index={index}
+              options={dropdownOptions.options}
+              defaultText={dropdownOptions.defaultText}
+              customStyles={dropdownOptions.customStyles}
+              onSelect={dropdownOptions.onSelect}
+              outerIsOpen={dropdownOpenStatuses[index]}
+              handleOuterIsOpen={handleDropdowns}
+              chosenValue={formState[dropdownOptions.id]}
+            />
+            {errors[dropdownOptions.id].show && (
+              <Text style={styles.errorText}>
+                {errors[dropdownOptions.id].message}
+              </Text>
+            )}
+          </Fragment>
+        ))}
+        <CustomButton
+          buttonStyles={styles.addButton}
+          pressedStyles={styles.addButtonPressed}
+          text={edit ? 'Edit' : 'Add'}
+          onPress={handleCreateTask}
+        />
+      </View>
+    </ErrorBoundary>
   );
 }
 
