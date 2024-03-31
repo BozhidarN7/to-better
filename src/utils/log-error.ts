@@ -38,5 +38,9 @@ export default function logError<T extends Error>(
   error: T,
   errorLevel: ErrorLevels,
 ) {
-  logToRollbar(error, errorLevel);
+  if (__DEV__) {
+    console.log(error);
+  } else {
+    logToRollbar(error, errorLevel);
+  }
 }
