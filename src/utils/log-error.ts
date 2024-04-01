@@ -39,6 +39,7 @@ export default function logError<T extends Error>(
   errorLevel: ErrorLevels,
 ) {
   if (__DEV__) {
+    // eslint-disable-next-line no-console
     console.log(error);
   } else {
     logToRollbar(error, errorLevel);
