@@ -7,6 +7,7 @@ import { TaskPlaceholder } from '../TaskPlaceholder';
 
 import { IconButton } from '@/components/common';
 import { COLORS, ICON_GROUPS } from '@/constants';
+import { ErrorCodes } from '@/enums';
 import {
   DELETE_TASK,
   UPDATE_TASK_COMPLETION_STATUS,
@@ -15,6 +16,7 @@ import {
 import { GET_WEEKS } from '@/gql/queries';
 import { Task as TaskType } from '@/types/tasks';
 import { getTaskCategoryColor, getTaskPriorityColor } from '@/utils';
+import handleOperationError from '@/utils/handle-operation-error';
 
 interface TaskProps {
   taskInfo: TaskType;
@@ -24,23 +26,30 @@ interface TaskProps {
 }
 
 export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
-  const [deleteTask] = useMutation(DELETE_TASK, {
+  const [deleteTask, { error: deleteTaskError }] = useMutation(DELETE_TASK, {
     refetchQueries: [GET_WEEKS, 'GetWeeks'],
   });
 
   const [
     updateTaskCompletionStatus,
-    { data, loading: updateTaskCompletionStatusLoading, error },
+    {
+      data,
+      loading: updateTaskCompletionStatusLoading,
+      error: updateTaskCompletionStatusError,
+    },
   ] = useMutation(UPDATE_TASK_COMPLETION_STATUS);
   const [
     updateTotalTasksCompleted,
-    { loading: updateTotalTasksCompletedLoading },
+    {
+      loading: updateTotalTasksCompletedLoading,
+      error: updateTotalTasksCompletedError,
+    },
   ] = useMutation(UPDATE_TOTAL_TASKS_COMPLETED);
 
   const navigation = useNavigation();
 
   const isTaskCompleted = useMemo(() => {
-    if (error) {
+    if (updateTaskCompletionStatusError) {
       Alert.alert('Something went wrong', 'Please try again');
     }
 
@@ -51,7 +60,7 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
     }
 
     return taskInfo.isCompleted;
-  }, [data, error, taskInfo.isCompleted]);
+  }, [data, updateTaskCompletionStatusError, taskInfo.isCompleted]);
 
   const checkButtonHandler = () => {
     updateTaskCompletionStatus({
@@ -95,6 +104,18 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
       { cancelable: true },
     );
   };
+
+  useMemo(
+    () =>
+      handleOperationError([
+        { error: deleteTaskError, errorCode: ErrorCodes.DeleteTask },
+        {
+          error: updateTotalTasksCompletedError,
+          errorCode: ErrorCodes.UpdateTotalTasksCompleted,
+        },
+      ]),
+    [deleteTaskError, updateTotalTasksCompletedError],
+  );
 
   if (updateTaskCompletionStatusLoading || updateTotalTasksCompletedLoading) {
     return <TaskPlaceholder />;
