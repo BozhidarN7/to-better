@@ -13,7 +13,7 @@ import store from '@/store';
 import { RootStackParamList } from '@/types/navigator-types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
-
+console.log(API_URL);
 const client = new ApolloClient({
   uri: API_URL,
   cache: new InMemoryCache(),
