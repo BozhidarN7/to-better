@@ -9,7 +9,7 @@ type OperationError = {
   errorCode: ErrorCodes;
 };
 
-export default function handleOperationError(
+export default function handleGraphqlError(
   operationError: OperationError | OperationError[],
 ) {
   const errors = Array.isArray(operationError)

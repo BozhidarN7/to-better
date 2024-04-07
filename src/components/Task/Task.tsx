@@ -15,8 +15,12 @@ import {
 } from '@/gql/mutations';
 import { GET_WEEKS } from '@/gql/queries';
 import { Task as TaskType } from '@/types/tasks';
-import { getTaskCategoryColor, getTaskPriorityColor } from '@/utils';
-import handleOperationError from '@/utils/handle-operation-error';
+import {
+  getTaskCategoryColor,
+  getTaskPriorityColor,
+  handleServerError,
+} from '@/utils';
+import handleGraphqlError from '@/utils/handle-graphql-error';
 
 interface TaskProps {
   taskInfo: TaskType;
@@ -26,14 +30,15 @@ interface TaskProps {
 }
 
 export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
-  const [deleteTask, { error: deleteTaskError }] = useMutation(DELETE_TASK, {
-    refetchQueries: [GET_WEEKS, 'GetWeeks'],
-  });
+  const [deleteTask, { data: deleteTaskData, error: deleteTaskError }] =
+    useMutation(DELETE_TASK, {
+      refetchQueries: [GET_WEEKS, 'GetWeeks'],
+    });
 
   const [
     updateTaskCompletionStatus,
     {
-      data,
+      data: updateTaskCompletionStatusData,
       loading: updateTaskCompletionStatusLoading,
       error: updateTaskCompletionStatusError,
     },
@@ -41,6 +46,7 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
   const [
     updateTotalTasksCompleted,
     {
+      data: updateTotalTasksCompltedData,
       loading: updateTotalTasksCompletedLoading,
       error: updateTotalTasksCompletedError,
     },
@@ -49,7 +55,7 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
   const navigation = useNavigation();
 
   const isTaskCompleted = useMemo(() => {
-    handleOperationError([
+    handleGraphqlError([
       {
         error: updateTaskCompletionStatusError,
         errorCode: ErrorCodes.UpdateTaskCompletionStatus,
@@ -60,14 +66,21 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
       Alert.alert('Something went wrong', 'Please try again');
     }
 
-    if (data) {
-      return data.editTask.success
-        ? data.editTask.task.isCompleted
-        : Alert.alert('Something went wrong', data.editTask.message);
+    if (updateTaskCompletionStatusData) {
+      return updateTaskCompletionStatusData.editTask.success
+        ? updateTaskCompletionStatusData.editTask.task.isCompleted
+        : Alert.alert(
+            'Something went wrong',
+            updateTaskCompletionStatusData.editTask.message,
+          );
     }
 
     return taskInfo.isCompleted;
-  }, [data, updateTaskCompletionStatusError, taskInfo.isCompleted]);
+  }, [
+    updateTaskCompletionStatusData,
+    updateTaskCompletionStatusError,
+    taskInfo.isCompleted,
+  ]);
 
   const checkButtonHandler = () => {
     updateTaskCompletionStatus({
@@ -114,7 +127,7 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
 
   useMemo(
     () =>
-      handleOperationError([
+      handleGraphqlError([
         { error: deleteTaskError, errorCode: ErrorCodes.DeleteTask },
         {
           error: updateTotalTasksCompletedError,
@@ -123,6 +136,18 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
       ]),
     [deleteTaskError, updateTotalTasksCompletedError],
   );
+
+  useMemo(() => {
+    handleServerError([
+      { ...updateTaskCompletionStatusData?.editTask },
+      { ...updateTotalTasksCompltedData?.updateTotalTasksCompleted },
+      { ...deleteTaskData?.deleteTask },
+    ]);
+  }, [
+    deleteTaskData?.deleteTask,
+    updateTaskCompletionStatusData?.editTask,
+    updateTotalTasksCompltedData?.updateTotalTasksCompleted,
+  ]);
 
   if (updateTaskCompletionStatusLoading || updateTotalTasksCompletedLoading) {
     return <TaskPlaceholder />;
