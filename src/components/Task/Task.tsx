@@ -49,6 +49,13 @@ export default function Task({ taskInfo, weekId, day, date }: TaskProps) {
   const navigation = useNavigation();
 
   const isTaskCompleted = useMemo(() => {
+    handleOperationError([
+      {
+        error: updateTaskCompletionStatusError,
+        errorCode: ErrorCodes.UpdateTaskCompletionStatus,
+      },
+    ]);
+
     if (updateTaskCompletionStatusError) {
       Alert.alert('Something went wrong', 'Please try again');
     }
