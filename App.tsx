@@ -1,4 +1,11 @@
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  HttpLink,
+  from,
+} from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
 import { API_URL } from '@env';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -14,9 +21,32 @@ import { RootStackParamList } from '@/types/navigator-types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const client = new ApolloClient({
+const httpLink = new HttpLink({
   uri: API_URL,
+});
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+      ),
+    );
+
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
+const client = new ApolloClient({
+  link: from([errorLink, httpLink]),
   cache: new InMemoryCache(),
+  defaultOptions: {
+    query: {
+      errorPolicy: 'all',
+    },
+    mutate: {
+      errorPolicy: 'all',
+    },
+  },
 });
 
 export default function App() {

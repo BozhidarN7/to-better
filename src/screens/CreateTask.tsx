@@ -126,8 +126,6 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
       refetchQueries: [GET_WEEKS, 'GetWeeks'],
     },
   );
-  console.log('to-better: createTaskError', createTaskError);
-  console.log('to-better: editTaskError', editTaskError);
 
   const { weekId, edit, day, taskId } = route.params;
   const taskToEdit =
