@@ -1,12 +1,12 @@
 import { useMutation } from '@apollo/client';
-import { Fragment, useLayoutEffect, useState } from 'react';
+import { Fragment, useLayoutEffect, useMemo, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
 import { CustomButton, Dropdown } from '@/components/common';
 import { COLORS, ICON_GROUPS, TASK_RESTRICTIONS } from '@/constants';
-import { Categories, Priorities } from '@/enums';
+import { Categories, ErrorCodes, Priorities } from '@/enums';
 import { CREATE_TASK, EDIT_TASK } from '@/gql/mutations';
 import { GET_WEEKS } from '@/gql/queries';
 import { RootState } from '@/store';
@@ -14,6 +14,7 @@ import { selectTaskByWeekIdAndDate } from '@/store/slices/task-slice';
 import { DropDownOption } from '@/types';
 import { CreateTasksProps } from '@/types/navigator-types/root-stack-param-list';
 import { Task } from '@/types/tasks';
+import { handleGraphqlError, handleServerError } from '@/utils';
 
 type DropdownOptionsIds = 'priority' | 'category';
 
@@ -115,12 +116,18 @@ const categoryOptions: DropDownOption[] = [
 const NUMBER_OF_DROPDOWNS = 2;
 
 export default function CreateTask({ route, navigation }: CreateTasksProps) {
-  const [createTask] = useMutation(CREATE_TASK, {
-    refetchQueries: [GET_WEEKS, 'GetWeeks'],
-  });
-  const [editTask] = useMutation(EDIT_TASK, {
-    refetchQueries: [GET_WEEKS, 'GetWeeks'],
-  });
+  const [createTask, { data: createTaskData, error: createTaskError }] =
+    useMutation(CREATE_TASK, {
+      refetchQueries: [GET_WEEKS, 'GetWeeks'],
+    });
+  const [editTask, { data: editTaskData, error: editTaskError }] = useMutation(
+    EDIT_TASK,
+    {
+      refetchQueries: [GET_WEEKS, 'GetWeeks'],
+    },
+  );
+  console.log('to-better: createTaskError', createTaskError);
+  console.log('to-better: editTaskError', editTaskError);
 
   const { weekId, edit, day, taskId } = route.params;
   const taskToEdit =
@@ -270,6 +277,25 @@ export default function CreateTask({ route, navigation }: CreateTasksProps) {
       },
     },
   ];
+
+  useMemo(
+    () =>
+      handleGraphqlError([
+        { error: createTaskError, errorCode: ErrorCodes.DeleteTask },
+        {
+          error: editTaskError,
+          errorCode: ErrorCodes.UpdateTotalTasksCompleted,
+        },
+      ]),
+    [createTaskError, editTaskError],
+  );
+
+  useMemo(() => {
+    handleServerError([
+      { ...createTaskData?.createTask },
+      { ...editTaskData?.editTask },
+    ]);
+  }, [createTaskData?.createTask, editTaskData?.editTask]);
 
   return (
     <ErrorBoundary>
