@@ -14,10 +14,12 @@ import { Provider } from 'react-redux';
 
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
 import { COLORS } from '@/constants';
+import { ErrorCodes } from '@/enums';
 import { AllTasks, DailyTasks } from '@/screens';
 import CreateTask from '@/screens/CreateTask';
 import store from '@/store';
 import { RootStackParamList } from '@/types/navigator-types';
+import { handleGraphqlError } from '@/utils';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -26,14 +28,22 @@ const httpLink = new HttpLink({
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
-    graphQLErrors.forEach(({ message, locations, path }) =>
-      console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-      ),
+  if (graphQLErrors) {
+    handleGraphqlError(
+      graphQLErrors.map(({ message, locations, path }) => ({
+        error: new Error(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+        ),
+        errorCode: ErrorCodes.GeneralGraphQLError,
+      })),
     );
+  }
 
-  if (networkError) console.log(`[Network error]: ${networkError}`);
+  if (networkError) {
+    handleGraphqlError([
+      { error: networkError, errorCode: ErrorCodes.GeneralNetworkError },
+    ]);
+  }
 });
 
 const client = new ApolloClient({
