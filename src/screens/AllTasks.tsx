@@ -1,13 +1,12 @@
 import { useSuspenseQuery } from '@apollo/client';
 import { Suspense, useEffect, useMemo } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 
+import { CalendadrButton } from '@/components/CalendarButton';
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
 import { WeeklyCard } from '@/components/WeeklyCard';
 import { WeeklyCardPlaceholder } from '@/components/WeeklyCardPlaceholder';
-import { CustomButton } from '@/components/common';
-import { COLORS, ICON_GROUPS } from '@/constants';
 import { GET_WEEKS } from '@/gql/queries';
 import { initializeTasks } from '@/store/slices/task-slice';
 import { createDate } from '@/utils';
@@ -37,20 +36,7 @@ function WeeksList() {
         data={orderedByWeeksDescending}
         renderItem={(item) => <WeeklyCard tasksData={item.item} />}
       />
-      <View style={styles.weeksButtonContainer}>
-        <CustomButton
-          text="Weeks"
-          buttonStyles={styles.weeksButton}
-          pressedStyles={styles.weeksButtonPressed}
-          onPress={() => {}}
-          icon={{
-            iconGroup: ICON_GROUPS.Ionicons,
-            icon: 'calendar',
-            color: COLORS.PRIMARY,
-            size: 24,
-          }}
-        />
-      </View>
+      <CalendadrButton />
     </>
   );
 }
@@ -68,17 +54,5 @@ export default function AllTasks() {
 const styles = StyleSheet.create({
   allTasksContainer: {
     flex: 1,
-  },
-  weeksButtonContainer: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-  },
-  weeksButton: {
-    width: 120,
-    elevation: 4,
-  },
-  weeksButtonPressed: {
-    opacity: 0.75,
   },
 });
