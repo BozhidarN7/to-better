@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  FlatList,
   Modal,
   StyleSheet,
   Text,
@@ -7,13 +8,52 @@ import {
   View,
 } from 'react-native';
 
-import { CustomButton } from '../common';
+import { CustomButton, IconButton } from '../common';
 
 import { COLORS, ICON_GROUPS } from '@/constants';
 
 export default function CalendarButton() {
   const [shouldShowCalendarModal, setShouldShowCalendarModal] = useState(false);
-  console.log('to-better:shouldShowModal', shouldShowCalendarModal);
+
+  const calculateWeeksDates = (year: number, weekNumber: number) => {
+    const daysOfWeek = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
+    const firstDayOfWeek = new Date(year, 0, 1 + (weekNumber - 1) * 7);
+    const dayIndex = firstDayOfWeek.getDay();
+    console.log(daysOfWeek[dayIndex]);
+
+    const startDate = firstDayOfWeek.toISOString().split('T')[0];
+    const endDate = new Date(firstDayOfWeek.getTime() + 6 * 24 * 3600 * 1000)
+      .toISOString()
+      .split('T')[0];
+
+    return { startDate, endDate };
+  };
+
+  const generateWeeks = (year: number) => {
+    const weeks = [];
+    for (let weekNumber = 1; weekNumber <= 52; weekNumber++) {
+      const weekDates = calculateWeeksDates(year, weekNumber);
+
+      weeks.push({
+        startDate: weekDates.startDate,
+        endDate: weekDates.endDate,
+      });
+    }
+    return weeks;
+  };
+
+  const weeks = generateWeeks(2024);
+  console.log(weeks);
+  console.log('----------------------');
+
   return (
     <>
       <View style={styles.weeksButtonContainer}>
@@ -38,9 +78,32 @@ export default function CalendarButton() {
           onPress={() => setShouldShowCalendarModal(false)}
         >
           <View style={styles.calendarModalContainer}>
-            <View style={styles.calendarModalContent}>
-              <Text>This is a modal window</Text>
-            </View>
+            <TouchableWithoutFeedback>
+              <View style={styles.calendarModalContent}>
+                <Text style={styles.weeksHeader}>Select weeks:</Text>
+                <FlatList
+                  style={styles.weeksList}
+                  data={weeks}
+                  keyExtractor={(item) => item.startDate}
+                  renderItem={(item) => {
+                    const { startDate, endDate } = item.item;
+                    const week = `${startDate} - ${endDate}`;
+                    return (
+                      <View style={styles.weekItemContainer}>
+                        <IconButton
+                          icon="check-box-outline-blank"
+                          iconGroup={ICON_GROUPS.MaterialIcons}
+                          color={COLORS.BLACK}
+                          size={24}
+                          onPress={() => {}}
+                        />
+                        <Text>Week {week}</Text>
+                      </View>
+                    );
+                  }}
+                />
+              </View>
+            </TouchableWithoutFeedback>
           </View>
         </TouchableWithoutFeedback>
       </Modal>
@@ -68,6 +131,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   calendarModalContent: {
+    height: 250,
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
@@ -80,5 +144,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  weeksHeader: {},
+  weeksList: {
+    width: '100%',
+  },
+  weekItemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: 5,
+    marginVertical: 1,
   },
 });
