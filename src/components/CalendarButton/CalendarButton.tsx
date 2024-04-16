@@ -75,7 +75,7 @@ export default function CalendarButton() {
       </View>
       <Modal animationType="fade" transparent visible={shouldShowCalendarModal}>
         <TouchableWithoutFeedback
-          onPress={() => setShouldShowCalendarModal(false)}
+          onPress={() => setShouldShowCalendarModal(true)}
         >
           <View style={styles.calendarModalContainer}>
             <TouchableWithoutFeedback>
@@ -89,16 +89,18 @@ export default function CalendarButton() {
                     const { startDate, endDate } = item.item;
                     const week = `${startDate} - ${endDate}`;
                     return (
-                      <View style={styles.weekItemContainer}>
-                        <IconButton
-                          icon="check-box-outline-blank"
-                          iconGroup={ICON_GROUPS.MaterialIcons}
-                          color={COLORS.BLACK}
-                          size={24}
-                          onPress={() => {}}
-                        />
-                        <Text>Week {week}</Text>
-                      </View>
+                      <TouchableWithoutFeedback>
+                        <View style={styles.weekItemContainer}>
+                          <IconButton
+                            icon="check-box-outline-blank"
+                            iconGroup={ICON_GROUPS.MaterialIcons}
+                            color={COLORS.BLACK}
+                            size={24}
+                            onPress={() => {}}
+                          />
+                          <Text>Week {week}</Text>
+                        </View>
+                      </TouchableWithoutFeedback>
                     );
                   }}
                 />
@@ -146,9 +148,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   weeksHeader: {},
-  weeksList: {
-    width: '100%',
-  },
+  weeksList: {},
   weekItemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
