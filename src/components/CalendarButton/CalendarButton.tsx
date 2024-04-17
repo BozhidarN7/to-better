@@ -16,18 +16,7 @@ export default function CalendarButton() {
   const [shouldShowCalendarModal, setShouldShowCalendarModal] = useState(false);
 
   const calculateWeeksDates = (year: number, weekNumber: number) => {
-    const daysOfWeek = [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-    ];
     const firstDayOfWeek = new Date(year, 0, 1 + (weekNumber - 1) * 7);
-    const dayIndex = firstDayOfWeek.getDay();
-    console.log(daysOfWeek[dayIndex]);
 
     const startDate = firstDayOfWeek.toISOString().split('T')[0];
     const endDate = new Date(firstDayOfWeek.getTime() + 6 * 24 * 3600 * 1000)
@@ -51,8 +40,6 @@ export default function CalendarButton() {
   };
 
   const weeks = generateWeeks(2024);
-  console.log(weeks);
-  console.log('----------------------');
 
   return (
     <>
@@ -62,7 +49,6 @@ export default function CalendarButton() {
           buttonStyles={styles.weeksButton}
           pressedStyles={styles.weeksButtonPressed}
           onPress={() => {
-            console.log('hre');
             setShouldShowCalendarModal((prev) => !prev);
           }}
           icon={{
