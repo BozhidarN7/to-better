@@ -11,19 +11,19 @@ import {
 import { CustomButton, IconButton } from '../common';
 
 import { COLORS, ICON_GROUPS } from '@/constants';
+import { converDateToString, getDateAndMonth } from '@/utils';
 
 export default function CalendarButton() {
   const [shouldShowCalendarModal, setShouldShowCalendarModal] = useState(false);
 
   const calculateWeeksDates = (year: number, weekNumber: number) => {
-    const firstDayOfWeek = new Date(year, 0, 1 + (weekNumber - 1) * 7);
+    const startDate = new Date(year, 0, 1 + (weekNumber - 1) * 7);
+    const endDate = new Date(startDate.getTime() + 6 * 24 * 3600 * 1000);
 
-    const startDate = firstDayOfWeek.toISOString().split('T')[0];
-    const endDate = new Date(firstDayOfWeek.getTime() + 6 * 24 * 3600 * 1000)
-      .toISOString()
-      .split('T')[0];
-
-    return { startDate, endDate };
+    return {
+      startDate: converDateToString(startDate),
+      endDate: converDateToString(endDate),
+    };
   };
 
   const generateWeeks = (year: number) => {
@@ -39,7 +39,7 @@ export default function CalendarButton() {
     return weeks;
   };
 
-  const weeks = generateWeeks(2024);
+  const weeks = generateWeeks(2023);
 
   return (
     <>
@@ -73,7 +73,7 @@ export default function CalendarButton() {
                   keyExtractor={(item) => item.startDate}
                   renderItem={(item) => {
                     const { startDate, endDate } = item.item;
-                    const week = `${startDate} - ${endDate}`;
+                    const week = `${getDateAndMonth(startDate)}/${getDateAndMonth(endDate)}`;
                     return (
                       <TouchableWithoutFeedback>
                         <View style={styles.weekItemContainer}>

@@ -1,4 +1,5 @@
 export { default as calculateTasksProgress } from './calculate-tasks-progress';
+export { default as converDateToString } from './convert-date-to-string';
 export { default as createDate } from './create-date';
 export { default as getCompletedTasksCount } from './get-completed-tasks-count';
 export { default as getDateAndMonth } from './get-date-and-month';
