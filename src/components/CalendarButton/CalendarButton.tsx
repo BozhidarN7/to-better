@@ -17,7 +17,13 @@ export default function CalendarButton() {
   const [shouldShowCalendarModal, setShouldShowCalendarModal] = useState(false);
 
   const calculateWeeksDates = (year: number, weekNumber: number) => {
-    const startDate = new Date(year, 0, 1 + (weekNumber - 1) * 7);
+    const firstDayOfYear = new Date(year, 0, 1 + (weekNumber - 1) * 7);
+    const dayOfWeek = firstDayOfYear.getDay();
+    const daysToAdd = dayOfWeek === 0 ? 1 : dayOfWeek === 1 ? 0 : 8 - dayOfWeek;
+
+    const startDate = new Date(
+      firstDayOfYear.getTime() + daysToAdd * 24 * 3600 * 1000,
+    );
     const endDate = new Date(startDate.getTime() + 6 * 24 * 3600 * 1000);
 
     return {
@@ -28,18 +34,25 @@ export default function CalendarButton() {
 
   const generateWeeks = (year: number) => {
     const weeks = [];
-    for (let weekNumber = 1; weekNumber <= 52; weekNumber++) {
+
+    for (let weekNumber = 1; weekNumber <= 53; weekNumber++) {
       const weekDates = calculateWeeksDates(year, weekNumber);
+
+      if (weekNumber === 53 && Number(weekDates.startDate.split('.')[0]) < 20) {
+        continue;
+      }
 
       weeks.push({
         startDate: weekDates.startDate,
         endDate: weekDates.endDate,
       });
     }
+
     return weeks;
   };
 
-  const weeks = generateWeeks(2023);
+  const weeks = generateWeeks(2024);
+  console.log(weeks.length);
 
   return (
     <>
