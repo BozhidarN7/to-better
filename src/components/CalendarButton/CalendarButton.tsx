@@ -134,10 +134,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   calendarModalContent: {
-    height: 250,
+    height: 300,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 40,
+    paddingHorizontal: 60,
+    paddingVertical: 40,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
