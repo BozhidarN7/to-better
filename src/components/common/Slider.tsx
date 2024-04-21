@@ -1,17 +1,15 @@
 import React, { useState, useRef } from 'react';
-import {
-  FlatList,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-} from 'react-native';
+import { FlatList, View, StyleSheet, Text } from 'react-native';
 
 import IconButton from './IconButton';
 
 import { COLORS, ICON_GROUPS } from '@/constants';
 
-export default function Slider({ data }) {
+interface SliderProps {
+  data: number[];
+}
+
+export default function Slider({ data }: SliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
 

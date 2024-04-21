@@ -52,7 +52,6 @@ export default function CalendarButton() {
   };
 
   const weeks = generateWeeks(2024);
-  console.log(weeks.length);
 
   return (
     <>
@@ -74,7 +73,7 @@ export default function CalendarButton() {
       </View>
       <Modal animationType="fade" transparent visible={shouldShowCalendarModal}>
         <TouchableWithoutFeedback
-          onPress={() => setShouldShowCalendarModal(true)}
+          onPress={() => setShouldShowCalendarModal(false)}
         >
           <View style={styles.calendarModalContainer}>
             <TouchableWithoutFeedback>
