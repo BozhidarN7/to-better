@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 
-import { CustomButton, IconButton } from '../common';
+import { CustomButton, IconButton, Slider } from '../common';
 
 import { COLORS, ICON_GROUPS } from '@/constants';
 import { converDateToString, getDateAndMonth } from '@/utils';
@@ -80,6 +80,9 @@ export default function CalendarButton() {
             <TouchableWithoutFeedback>
               <View style={styles.calendarModalContent}>
                 <Text style={styles.weeksHeader}>Select weeks:</Text>
+                <View style={styles.yearsSliderContainer}>
+                  <Slider data={[2022, 2023, 2024, 2025, 2026]} />
+                </View>
                 <FlatList
                   style={styles.weeksList}
                   data={weeks}
@@ -135,7 +138,7 @@ const styles = StyleSheet.create({
     height: 250,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 35,
+    padding: 40,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -147,6 +150,10 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   weeksHeader: {},
+  yearsSliderContainer: {
+    height: 20,
+    marginVertical: 10,
+  },
   weeksList: {},
   weekItemContainer: {
     flexDirection: 'row',
