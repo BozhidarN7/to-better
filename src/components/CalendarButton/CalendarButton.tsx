@@ -51,8 +51,7 @@ export default function CalendarButton() {
     return weeks;
   };
 
-  const weeks = generateWeeks(2024);
-
+  const weeks = generateWeeks(2025);
   return (
     <>
       <View style={styles.weeksButtonContainer}>
