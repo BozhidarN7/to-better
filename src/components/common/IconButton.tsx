@@ -14,6 +14,8 @@ interface IconButtonProps {
   size: number;
   onPress: () => void;
   stylesOnPressed?: StyleProp<ViewStyle>;
+  disabled?: boolean;
+  disabledStyles?: StyleProp<ViewStyle>;
 }
 
 export default function IconButton({
@@ -22,12 +24,18 @@ export default function IconButton({
   size,
   color,
   stylesOnPressed,
+  disabled,
+  disabledStyles,
   onPress,
 }: IconButtonProps) {
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [pressed && stylesOnPressed]}
+      style={({ pressed }) => [
+        pressed && stylesOnPressed,
+        disabled && disabledStyles,
+      ]}
+      disabled={disabled}
     >
       <Icon iconGroup={iconGroup} icon={icon} size={size} color={color} />
     </Pressable>

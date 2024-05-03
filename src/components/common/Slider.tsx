@@ -21,6 +21,12 @@ export default function Slider({ data }: SliderProps) {
   const [currentIndex, setCurrentIndex] = useState(
     data.indexOf(weeksCalendarSelectedYear),
   );
+  const [shouldDisableLeftButton, setShouldDisableLeftButton] = useState(
+    currentIndex === 0,
+  );
+  const [shouldDisableRightButton, setShouldDisableRightButton] = useState(
+    currentIndex === data.length - 1,
+  );
   const flatListRef = useRef<FlatList>(null);
 
   const handleLeftButtonPress = () => {
@@ -29,6 +35,11 @@ export default function Slider({ data }: SliderProps) {
       dispatch(
         updateWeeksCalendarSelectedYear({ newYear: data[currentIndex - 1] }),
       );
+      setShouldDisableRightButton(false);
+    }
+
+    if (currentIndex - 1 === 0) {
+      setShouldDisableLeftButton(true);
     }
   };
 
@@ -38,6 +49,11 @@ export default function Slider({ data }: SliderProps) {
       dispatch(
         updateWeeksCalendarSelectedYear({ newYear: data[currentIndex + 1] }),
       );
+      setShouldDisableLeftButton(false);
+    }
+
+    if (currentIndex + 1 === data.length - 1) {
+      setShouldDisableRightButton(true);
     }
   };
 
@@ -56,6 +72,8 @@ export default function Slider({ data }: SliderProps) {
         color={COLORS.BLACK}
         iconGroup={ICON_GROUPS.FontAwesome}
         icon="angle-left"
+        disabled={shouldDisableLeftButton}
+        disabledStyles={styles.buttonDisabled}
       />
 
       <FlatList
@@ -91,6 +109,8 @@ export default function Slider({ data }: SliderProps) {
         color={COLORS.BLACK}
         iconGroup={ICON_GROUPS.FontAwesome}
         icon="angle-right"
+        disabled={shouldDisableRightButton}
+        disabledStyles={styles.buttonDisabled}
       />
     </View>
   );
@@ -106,5 +126,8 @@ const styles = StyleSheet.create({
     width: 100,
     marginTop: 2,
     marginLeft: 25,
+  },
+  buttonDisabled: {
+    opacity: 0.2,
   },
 });
