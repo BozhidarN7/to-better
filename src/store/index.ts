@@ -1,10 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { tasksReducer } from './slices';
+import { globalReducer, tasksReducer } from './slices';
 
 const store = configureStore({
   reducer: {
     tasks: tasksReducer,
+    global: globalReducer,
   },
 });
 

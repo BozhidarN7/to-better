@@ -7,14 +7,20 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { CustomButton, IconButton, Slider } from '../common';
 
 import { COLORS, ICON_GROUPS } from '@/constants';
+import { RootState } from '@/store';
+import { GlobalState } from '@/types';
 import { converDateToString, getDateAndMonth } from '@/utils';
 
 export default function CalendarButton() {
   const [shouldShowCalendarModal, setShouldShowCalendarModal] = useState(false);
+  const { weeksCalendarSelectedYear } = useSelector<RootState, GlobalState>(
+    (state) => state.global,
+  );
 
   const calculateWeeksDates = (year: number, weekNumber: number) => {
     const firstDayOfYear = new Date(year, 0, 1 + (weekNumber - 1) * 7);
@@ -51,7 +57,8 @@ export default function CalendarButton() {
     return weeks;
   };
 
-  const weeks = generateWeeks(2025);
+  const weeks = generateWeeks(weeksCalendarSelectedYear);
+
   return (
     <>
       <View style={styles.weeksButtonContainer}>

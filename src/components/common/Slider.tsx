@@ -1,37 +1,52 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FlatList, View, StyleSheet, Text } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import IconButton from './IconButton';
 
 import { COLORS, ICON_GROUPS } from '@/constants';
+import { RootState } from '@/store';
+import { updateWeeksCalendarSelectedYear } from '@/store/slices/global-slice';
+import { GlobalState } from '@/types';
 
 interface SliderProps {
   data: number[];
 }
 
 export default function Slider({ data }: SliderProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const dispatch = useDispatch();
+  const { weeksCalendarSelectedYear } = useSelector<RootState, GlobalState>(
+    (state) => state.global,
+  );
+  const [currentIndex, setCurrentIndex] = useState(
+    data.indexOf(weeksCalendarSelectedYear),
+  );
   const flatListRef = useRef<FlatList>(null);
 
   const handleLeftButtonPress = () => {
     if (currentIndex > 0) {
       setCurrentIndex((prevIndex) => prevIndex - 1);
-      flatListRef.current?.scrollToIndex({
-        animated: true,
-        index: currentIndex - 1,
-      });
+      dispatch(
+        updateWeeksCalendarSelectedYear({ newYear: data[currentIndex - 1] }),
+      );
     }
   };
 
   const handleRightButtonPress = () => {
     if (currentIndex < data.length - 1) {
       setCurrentIndex((prevIndex) => prevIndex + 1);
-      flatListRef.current?.scrollToIndex({
-        animated: true,
-        index: currentIndex + 1,
-      });
+      dispatch(
+        updateWeeksCalendarSelectedYear({ newYear: data[currentIndex + 1] }),
+      );
     }
   };
+
+  useEffect(() => {
+    flatListRef.current?.scrollToIndex({
+      animated: true,
+      index: data.indexOf(weeksCalendarSelectedYear),
+    });
+  }, [data, weeksCalendarSelectedYear]);
 
   return (
     <View style={styles.sliderContainer}>
