@@ -1,1 +1,5 @@
-export { updateWeeksCalendarSelectedYear, globalReducer } from './global-slice';
+export {
+  setFirstYearWithTasks,
+  updateWeeksCalendarSelectedYear,
+  globalReducer,
+} from './global-slice';

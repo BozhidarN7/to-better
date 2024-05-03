@@ -8,6 +8,7 @@ import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
 import { WeeklyCard } from '@/components/WeeklyCard';
 import { WeeklyCardPlaceholder } from '@/components/WeeklyCardPlaceholder';
 import { GET_WEEKS } from '@/gql/queries';
+import { setFirstYearWithTasks } from '@/store/slices/global-slice';
 import { initializeTasks } from '@/store/slices/task-slice';
 import { createDate } from '@/utils';
 
@@ -28,6 +29,19 @@ function WeeksList() {
   useEffect(() => {
     dispatch(initializeTasks({ tasks: data.weeks }));
   }, [data.weeks, dispatch]);
+
+  useEffect(() => {
+    dispatch(
+      setFirstYearWithTasks({
+        year: Number(
+          orderedByWeeksDescending
+            .at(-1)
+            ?.sevenDaysPeriod.startDate.split('.')
+            .at(-1) || new Date().getFullYear(),
+        ),
+      }),
+    );
+  });
 
   return (
     <>

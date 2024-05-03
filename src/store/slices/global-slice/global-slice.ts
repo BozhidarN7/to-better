@@ -1,7 +1,10 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { globalState } from '@/store/state';
-import { UpdateWeeksCalendarSelectedYear } from '@/types/payload-types/global-slice-payload-types';
+import {
+  SetFirstYearWithTasks,
+  UpdateWeeksCalendarSelectedYear,
+} from '@/types/payload-types/global-slice-payload-types';
 
 const globalSlice = createSlice({
   name: 'global',
@@ -14,8 +17,13 @@ const globalSlice = createSlice({
       const { newYear } = action.payload;
       return { ...state, weeksCalendarSelectedYear: newYear };
     },
+    setFirstYearWithTasks(state, action: PayloadAction<SetFirstYearWithTasks>) {
+      const { year } = action.payload;
+      return { ...state, year };
+    },
   },
 });
 
-export const { updateWeeksCalendarSelectedYear } = globalSlice.actions;
+export const { updateWeeksCalendarSelectedYear, setFirstYearWithTasks } =
+  globalSlice.actions;
 export const globalReducer = globalSlice.reducer;

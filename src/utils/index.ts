@@ -1,6 +1,7 @@
 export { default as calculateTasksProgress } from './calculate-tasks-progress';
 export { default as converDateToString } from './convert-date-to-string';
 export { default as createDate } from './create-date';
+export { default as determinePastAndFutureYears } from './determine-past-and-future-years';
 export { default as getCompletedTasksCount } from './get-completed-tasks-count';
 export { default as getDateAndMonth } from './get-date-and-month';
 export { default as getTaskCategoryColor } from './get-task-category-color';

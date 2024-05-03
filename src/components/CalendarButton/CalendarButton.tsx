@@ -14,13 +14,18 @@ import { CustomButton, IconButton, Slider } from '../common';
 import { COLORS, ICON_GROUPS } from '@/constants';
 import { RootState } from '@/store';
 import { GlobalState } from '@/types';
-import { converDateToString, getDateAndMonth } from '@/utils';
+import {
+  converDateToString,
+  determinePastAndFutureYears,
+  getDateAndMonth,
+} from '@/utils';
 
 export default function CalendarButton() {
   const [shouldShowCalendarModal, setShouldShowCalendarModal] = useState(false);
-  const { weeksCalendarSelectedYear } = useSelector<RootState, GlobalState>(
-    (state) => state.global,
-  );
+  const { weeksCalendarSelectedYear, firstYearWithTasks } = useSelector<
+    RootState,
+    GlobalState
+  >((state) => state.global);
 
   const calculateWeeksDates = (year: number, weekNumber: number) => {
     const firstDayOfYear = new Date(year, 0, 1 + (weekNumber - 1) * 7);
@@ -86,7 +91,9 @@ export default function CalendarButton() {
               <View style={styles.calendarModalContent}>
                 <Text style={styles.weeksHeader}>Select weeks:</Text>
                 <View style={styles.yearsSliderContainer}>
-                  <Slider data={[2022, 2023, 2024, 2025, 2026]} />
+                  <Slider
+                    data={determinePastAndFutureYears(firstYearWithTasks)}
+                  />
                 </View>
                 <FlatList
                   style={styles.weeksList}
