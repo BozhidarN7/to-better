@@ -14,6 +14,7 @@ import { CustomButton, IconButton, Slider } from '../common';
 import { COLORS, ICON_GROUPS } from '@/constants';
 import { RootState } from '@/store';
 import { GlobalState } from '@/types';
+import { SevenDaysPeriod, TasksState } from '@/types/tasks';
 import {
   converDateToString,
   determinePastAndFutureYears,
@@ -22,6 +23,9 @@ import {
 
 export default function CalendarButton() {
   const [shouldShowCalendarModal, setShouldShowCalendarModal] = useState(false);
+  const weeksState = useSelector<RootState, TasksState[]>(
+    (state) => state.tasks,
+  );
   const { weeksCalendarSelectedYear, firstYearWithTasks } = useSelector<
     RootState,
     GlobalState
@@ -60,6 +64,14 @@ export default function CalendarButton() {
     }
 
     return weeks;
+  };
+
+  const checkIfWeekIsSelected = (sevenDaysPeriod: SevenDaysPeriod) => {
+    return weeksState.find(
+      (week) =>
+        week.sevenDaysPeriod.startDate === sevenDaysPeriod.startDate &&
+        week.sevenDaysPeriod.endDate === sevenDaysPeriod.endDate,
+    )?.isSelected;
   };
 
   const weeks = generateWeeks(weeksCalendarSelectedYear);
@@ -101,14 +113,21 @@ export default function CalendarButton() {
                   keyExtractor={(item) => item.startDate}
                   renderItem={(item) => {
                     const { startDate, endDate } = item.item;
+                    const isWeekSelected = checkIfWeekIsSelected(item.item);
                     const week = `${getDateAndMonth(startDate)}/${getDateAndMonth(endDate)}`;
                     return (
                       <TouchableWithoutFeedback>
                         <View style={styles.weekItemContainer}>
                           <IconButton
-                            icon="check-box-outline-blank"
+                            icon={
+                              isWeekSelected
+                                ? 'check-box'
+                                : 'check-box-outline-blank'
+                            }
                             iconGroup={ICON_GROUPS.MaterialIcons}
-                            color={COLORS.BLACK}
+                            color={
+                              isWeekSelected ? COLORS.COMPELTED : COLORS.BLACK
+                            }
                             size={24}
                             onPress={() => {}}
                           />

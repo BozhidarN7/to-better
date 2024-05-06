@@ -1,13 +1,12 @@
+import SevenDaysPeriod from './seven-days-period';
 import Task from './task';
 
 interface Week {
   _id: string;
   totalTasks: number;
   tasksCompleted: number;
-  sevenDaysPeriod: {
-    startDate: string;
-    endDate: string;
-  };
+  sevenDaysPeriod: SevenDaysPeriod;
+  isSelected: boolean;
   tasks: {
     monday: Task[];
     tuesday: Task[];

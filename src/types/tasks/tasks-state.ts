@@ -6,6 +6,7 @@ interface TasksState {
     startDate: string;
     endDate: string;
   };
+  isSelected: boolean;
   totalTasks: number;
   tasksCompleted: number;
   tasks: {

@@ -16,6 +16,7 @@ export const GET_WEEKS: TypedDocumentNode<Data> = gql`
         startDate
         endDate
       }
+      isSelected
       tasks {
         monday {
           _id

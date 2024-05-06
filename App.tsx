@@ -26,7 +26,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const httpLink = new HttpLink({
   uri: API_URL,
 });
-console.log(API_URL);
+console.log('to-better:backend-api', API_URL);
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     handleGraphqlError(

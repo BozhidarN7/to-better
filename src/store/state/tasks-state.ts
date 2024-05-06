@@ -10,6 +10,7 @@ const tasksState: TasksState[] = [
     },
     totalTasks: 3,
     tasksCompleted: 2,
+    isSelected: true,
     tasks: {
       monday: [],
       tuesday: [],
@@ -59,6 +60,7 @@ const tasksState: TasksState[] = [
     },
     totalTasks: 1,
     tasksCompleted: 0,
+    isSelected: true,
     tasks: {
       monday: [],
       tuesday: [
