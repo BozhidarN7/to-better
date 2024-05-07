@@ -1,3 +1,4 @@
+import { useMutation } from '@apollo/client';
 import { useState } from 'react';
 import {
   FlatList,
@@ -12,6 +13,7 @@ import { useSelector } from 'react-redux';
 import { CustomButton, IconButton, Slider } from '../common';
 
 import { COLORS, ICON_GROUPS } from '@/constants';
+import { SELECT_WEEK_BY_SEVEN_DAYS_PERIOD } from '@/gql/mutations';
 import { RootState } from '@/store';
 import { GlobalState } from '@/types';
 import { SevenDaysPeriod, TasksState } from '@/types/tasks';
@@ -22,6 +24,7 @@ import {
 } from '@/utils';
 
 export default function CalendarButton() {
+  const [selectWeek] = useMutation(SELECT_WEEK_BY_SEVEN_DAYS_PERIOD);
   const [shouldShowCalendarModal, setShouldShowCalendarModal] = useState(false);
   const weeksState = useSelector<RootState, TasksState[]>(
     (state) => state.tasks,
@@ -72,6 +75,18 @@ export default function CalendarButton() {
         week.sevenDaysPeriod.startDate === sevenDaysPeriod.startDate &&
         week.sevenDaysPeriod.endDate === sevenDaysPeriod.endDate,
     )?.isSelected;
+  };
+
+  const handleSelectWeek = (item: SevenDaysPeriod) => {
+    selectWeek({
+      variables: {
+        sevenDaysPeriod: {
+          startDate: item.startDate,
+          endDate: item.endDate,
+        },
+        isSelected: !checkIfWeekIsSelected(item),
+      },
+    });
   };
 
   const weeks = generateWeeks(weeksCalendarSelectedYear);
@@ -129,7 +144,7 @@ export default function CalendarButton() {
                               isWeekSelected ? COLORS.COMPELTED : COLORS.BLACK
                             }
                             size={24}
-                            onPress={() => {}}
+                            onPress={() => handleSelectWeek(item.item)}
                           />
                           <Text>Week {week}</Text>
                         </View>

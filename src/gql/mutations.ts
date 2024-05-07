@@ -108,3 +108,107 @@ export const DELETE_TASK: TypedDocumentNode<DeleteTaskData> = gql`
     }
   }
 `;
+
+interface SelectWeekBySevenDaysPeriod {
+  week: {
+    week: Week;
+  } & MutationResponse;
+}
+
+export const SELECT_WEEK_BY_SEVEN_DAYS_PERIOD: TypedDocumentNode<SelectWeekBySevenDaysPeriod> = gql`
+  mutation SelectWeekBySevenDaysPeriod(
+    $sevenDaysPeriod: SevenDaysPeriodInput!
+    $isSelected: Boolean!
+  ) {
+    selectWeekBySevenDaysPeriod(
+      sevenDaysPeriod: $sevenDaysPeriod
+      isSelected: $isSelected
+    ) {
+      code
+      success
+      message
+      week {
+        _id
+        sevenDaysPeriod {
+          startDate
+          endDate
+        }
+        totalTasks
+        tasksCompleted
+        tasks {
+          monday {
+            _id
+            title
+            description
+            priority
+            category
+            isCompleted
+            dayOfWeek
+            weekId
+          }
+          tuesday {
+            _id
+            title
+            description
+            priority
+            category
+            isCompleted
+            dayOfWeek
+            weekId
+          }
+          wednesday {
+            _id
+            title
+            description
+            priority
+            category
+            isCompleted
+            dayOfWeek
+            weekId
+          }
+          thursday {
+            _id
+            title
+            description
+            priority
+            category
+            isCompleted
+            dayOfWeek
+            weekId
+          }
+          friday {
+            _id
+            title
+            description
+            priority
+            category
+            isCompleted
+            dayOfWeek
+            weekId
+          }
+          saturday {
+            _id
+            title
+            description
+            priority
+            category
+            isCompleted
+            dayOfWeek
+            weekId
+          }
+          sunday {
+            _id
+            title
+            description
+            priority
+            category
+            isCompleted
+            dayOfWeek
+            weekId
+          }
+        }
+        isSelected
+      }
+    }
+  }
+`;
