@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@apollo/client';
 import { Suspense, useEffect, useMemo } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { CalendadrButton } from '@/components/CalendarButton';
@@ -43,12 +43,24 @@ function WeeksList() {
     );
   });
 
+  const renderWhenThereAreNoSelectedWeeks = () => {
+    return (
+      <View style={styles.noTasksContainer}>
+        <Text>Please select weeks you want to see from the calendar</Text>
+      </View>
+    );
+  };
+
   return (
     <>
       <FlatList
         style={styles.allTasksContainer}
+        contentContainerStyle={[
+          orderedByWeeksDescending.length === 0 && styles.noTasksContainer,
+        ]}
         data={orderedByWeeksDescending}
         renderItem={(item) => <WeeklyCard tasksData={item.item} />}
+        ListEmptyComponent={renderWhenThereAreNoSelectedWeeks()}
       />
       <CalendadrButton />
     </>
@@ -68,5 +80,10 @@ export default function AllTasks() {
 const styles = StyleSheet.create({
   allTasksContainer: {
     flex: 1,
+  },
+  noTasksContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
