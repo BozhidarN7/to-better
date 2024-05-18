@@ -14,6 +14,7 @@ import { CustomButton, IconButton, Slider } from '../common';
 
 import { COLORS, ICON_GROUPS } from '@/constants';
 import { SELECT_WEEK_BY_SEVEN_DAYS_PERIOD } from '@/gql/mutations';
+import { GET_WEEKS } from '@/gql/queries';
 import { RootState } from '@/store';
 import { GlobalState } from '@/types';
 import { SevenDaysPeriod, TasksState } from '@/types/tasks';
@@ -24,7 +25,9 @@ import {
 } from '@/utils';
 
 export default function CalendarButton() {
-  const [selectWeek] = useMutation(SELECT_WEEK_BY_SEVEN_DAYS_PERIOD);
+  const [selectWeek] = useMutation(SELECT_WEEK_BY_SEVEN_DAYS_PERIOD, {
+    refetchQueries: [GET_WEEKS, 'GetWeeks'],
+  });
   const [shouldShowCalendarModal, setShouldShowCalendarModal] = useState(false);
   const weeksState = useSelector<RootState, TasksState[]>(
     (state) => state.tasks,
