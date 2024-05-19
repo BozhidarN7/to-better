@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { CustomButton, IconButton, Slider } from '../common';
 
@@ -16,6 +16,7 @@ import { COLORS, ICON_GROUPS } from '@/constants';
 import { SELECT_WEEK_BY_SEVEN_DAYS_PERIOD } from '@/gql/mutations';
 import { GET_WEEKS } from '@/gql/queries';
 import { RootState } from '@/store';
+import { updateTotalTasksSelected } from '@/store/slices/task-slice';
 import { GlobalState } from '@/types';
 import { SevenDaysPeriod, TasksState } from '@/types/tasks';
 import {
@@ -25,13 +26,14 @@ import {
 } from '@/utils';
 
 export default function CalendarButton() {
-  const [selectWeek] = useMutation(SELECT_WEEK_BY_SEVEN_DAYS_PERIOD, {
-    refetchQueries: [GET_WEEKS, 'GetWeeks'],
-  });
+  const disatch = useDispatch();
+  const [selectWeek, { loading: selectWeeksBySevenDaysPeriodLoading }] =
+    useMutation(SELECT_WEEK_BY_SEVEN_DAYS_PERIOD, {
+      refetchQueries: [GET_WEEKS, 'GetWeeks'],
+      awaitRefetchQueries: true,
+    });
   const [shouldShowCalendarModal, setShouldShowCalendarModal] = useState(false);
-  const weeksState = useSelector<RootState, TasksState[]>(
-    (state) => state.tasks,
-  );
+  const weeksState = useSelector<RootState, TasksState>((state) => state.tasks);
   const { weeksCalendarSelectedYear, firstYearWithTasks } = useSelector<
     RootState,
     GlobalState
@@ -73,7 +75,7 @@ export default function CalendarButton() {
   };
 
   const checkIfWeekIsSelected = (sevenDaysPeriod: SevenDaysPeriod) => {
-    return weeksState.find(
+    return weeksState.weeks.find(
       (week) =>
         week.sevenDaysPeriod.startDate === sevenDaysPeriod.startDate &&
         week.sevenDaysPeriod.endDate === sevenDaysPeriod.endDate,
@@ -81,15 +83,17 @@ export default function CalendarButton() {
   };
 
   const handleSelectWeek = (item: SevenDaysPeriod) => {
+    const isSelected = checkIfWeekIsSelected(item);
     selectWeek({
       variables: {
         sevenDaysPeriod: {
           startDate: item.startDate,
           endDate: item.endDate,
         },
-        isSelected: !checkIfWeekIsSelected(item),
+        isSelected: !isSelected,
       },
     });
+    disatch(updateTotalTasksSelected({ shouldIncrease: !isSelected }));
   };
 
   const weeks = generateWeeks(weeksCalendarSelectedYear);

@@ -1,23 +1,8 @@
-import Task from './task';
+import Week from './week';
 
 interface TasksState {
-  _id: string;
-  sevenDaysPeriod: {
-    startDate: string;
-    endDate: string;
-  };
-  isSelected: boolean;
-  totalTasks: number;
-  tasksCompleted: number;
-  tasks: {
-    monday: Task[];
-    tuesday: Task[];
-    wednesday: Task[];
-    thursday: Task[];
-    friday: Task[];
-    saturday: Task[];
-    sunday: Task[];
-  };
+  weeks: Week[];
+  totalWeeksSelected: number;
 }
 
 export default TasksState;

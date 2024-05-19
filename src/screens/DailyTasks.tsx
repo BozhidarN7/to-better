@@ -18,10 +18,8 @@ import {
 
 export default function DailyTasks({ route, navigation }: DailyTasksProps) {
   const { day, date, month, weekId } = route.params;
-  const tasksState = useSelector<RootState, TasksState[]>(
-    (state) => state.tasks,
-  );
-  const week = tasksState.find((weeks) => weeks._id === weekId);
+  const tasksState = useSelector<RootState, TasksState>((state) => state.tasks);
+  const week = tasksState.weeks.find((weeks) => weeks._id === weekId);
   const dayOfTheWeekIndex =
     date -
     Number(

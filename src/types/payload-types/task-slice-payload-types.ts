@@ -28,3 +28,7 @@ export type UpdateTaskCompletionStatus = {
   day: DayOfWeek;
   taskId: string;
 };
+
+export type UpdateTotalTasksSelected = {
+  shouldIncrease: boolean;
+};
