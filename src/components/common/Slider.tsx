@@ -11,9 +11,10 @@ import { GlobalState } from '@/types';
 
 interface SliderProps {
   data: number[];
+  shouldDisableSlider: boolean;
 }
 
-export default function Slider({ data }: SliderProps) {
+export default function Slider({ data, shouldDisableSlider }: SliderProps) {
   const dispatch = useDispatch();
   const { weeksCalendarSelectedYear } = useSelector<RootState, GlobalState>(
     (state) => state.global,
@@ -72,7 +73,7 @@ export default function Slider({ data }: SliderProps) {
         color={COLORS.BLACK}
         iconGroup={ICON_GROUPS.FontAwesome}
         icon="angle-left"
-        disabled={shouldDisableLeftButton}
+        disabled={shouldDisableLeftButton || shouldDisableSlider}
         disabledStyles={styles.buttonDisabled}
       />
 
@@ -109,7 +110,7 @@ export default function Slider({ data }: SliderProps) {
         color={COLORS.BLACK}
         iconGroup={ICON_GROUPS.FontAwesome}
         icon="angle-right"
-        disabled={shouldDisableRightButton}
+        disabled={shouldDisableRightButton || shouldDisableSlider}
         disabledStyles={styles.buttonDisabled}
       />
     </View>

@@ -7,6 +7,7 @@ import {
   Text,
   TouchableWithoutFeedback,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -123,14 +124,28 @@ export default function CalendarButton() {
           <View style={styles.calendarModalContainer}>
             <TouchableWithoutFeedback>
               <View style={styles.calendarModalContent}>
+                <ActivityIndicator
+                  animating={selectWeeksBySevenDaysPeriodLoading}
+                  size={30}
+                  color={COLORS.SECONDARY_100}
+                />
                 <Text style={styles.weeksHeader}>Select weeks:</Text>
-                <View style={styles.yearsSliderContainer}>
+                <View
+                  style={[
+                    styles.yearsSliderContainer,
+                    selectWeeksBySevenDaysPeriodLoading && styles.fetching,
+                  ]}
+                >
                   <Slider
                     data={determinePastAndFutureYears(firstYearWithTasks)}
+                    shouldDisableSlider={selectWeeksBySevenDaysPeriodLoading}
                   />
                 </View>
                 <FlatList
-                  style={styles.weeksList}
+                  style={[
+                    styles.weeksList,
+                    selectWeeksBySevenDaysPeriodLoading && styles.fetching,
+                  ]}
                   data={weeks}
                   keyExtractor={(item) => item.startDate}
                   renderItem={(item) => {
@@ -151,6 +166,7 @@ export default function CalendarButton() {
                               isWeekSelected ? COLORS.COMPELTED : COLORS.BLACK
                             }
                             size={24}
+                            disabled={selectWeeksBySevenDaysPeriodLoading}
                             onPress={() => handleSelectWeek(item.item)}
                           />
                           <Text>Week {week}</Text>
@@ -192,7 +208,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     paddingHorizontal: 60,
-    paddingVertical: 40,
+    paddingTop: 10,
+    paddingBottom: 40,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -202,6 +219,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  fetching: {
+    opacity: 0.4,
   },
   weeksHeader: {},
   yearsSliderContainer: {

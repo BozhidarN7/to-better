@@ -23,10 +23,10 @@ import { handleGraphqlError } from '@/utils';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+console.log('to-better:backend-api', API_URL);
 const httpLink = new HttpLink({
   uri: API_URL,
 });
-console.log('to-better:backend-api', API_URL);
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     handleGraphqlError(
