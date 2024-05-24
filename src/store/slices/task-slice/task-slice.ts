@@ -17,7 +17,7 @@ const tasksSlice = createSlice({
   reducers: {
     initializeTasks(state, action: PayloadAction<AddTasks>) {
       const { tasks } = action.payload;
-      return { ...state, weeks: tasks };
+      return { ...state, weeks: tasks, totalWeeksSelected: tasks.length };
     },
     updateTotalTasksSelected(
       state,
