@@ -1,17 +1,15 @@
 import { useSuspenseQuery } from '@apollo/client';
 import { Suspense, useEffect, useMemo } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { CalendadrButton } from '@/components/CalendarButton';
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
 import { WeeklyCard } from '@/components/WeeklyCard';
 import { WeeklyCardPlaceholder } from '@/components/WeeklyCardPlaceholder';
 import { GET_WEEKS } from '@/gql/queries';
-import { RootState } from '@/store';
 import { setFirstYearWithTasks } from '@/store/slices/global-slice';
 import { initializeTasks } from '@/store/slices/task-slice';
-import { TasksState } from '@/types/tasks';
 import { createDate } from '@/utils';
 
 function WeeksList() {
@@ -70,13 +68,10 @@ function WeeksList() {
 }
 
 export default function AllTasks() {
-  const { totalWeeksSelected } = useSelector<RootState, TasksState>(
-    (state) => state.tasks,
-  );
   return (
     <ErrorBoundary>
       <Suspense fallback={<WeeklyCardPlaceholder />}>
-        <WeeksList key={totalWeeksSelected} />
+        <WeeksList />
       </Suspense>
       <CalendadrButton />
     </ErrorBoundary>
