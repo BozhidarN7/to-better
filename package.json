@@ -40,7 +40,7 @@
     "eslint": "^8.56.0",
     "eslint-config-universe": "^12.0.0",
     "eslint-plugin-react": "^7.33.2",
-    "husky": "^8.0.3",
+    "husky": "^9.0.0",
     "prettier": "^3.2.2",
     "react-native-dotenv": "^3.4.11",
     "typescript": "^5.1.3"
