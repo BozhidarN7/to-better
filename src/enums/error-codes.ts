@@ -6,6 +6,7 @@ enum ErrorCodes {
   UpdateTaskCompletionStatus = 1004,
   GeneralGraphQLError = 1005,
   GeneralNetworkError = 1006,
+  WeekSelectionError = 1007,
 }
 
 export default ErrorCodes;

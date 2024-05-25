@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   FlatList,
   Modal,
@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CustomButton, IconButton, Slider } from '../common';
 
 import { COLORS, ICON_GROUPS } from '@/constants';
+import { ErrorCodes } from '@/enums';
 import { SELECT_WEEK_BY_SEVEN_DAYS_PERIOD } from '@/gql/mutations';
 import { GET_WEEKS } from '@/gql/queries';
 import { RootState } from '@/store';
@@ -24,15 +25,21 @@ import {
   converDateToString,
   determinePastAndFutureYears,
   getDateAndMonth,
+  handleGraphqlError,
 } from '@/utils';
 
 export default function CalendarButton() {
   const disatch = useDispatch();
-  const [selectWeek, { loading: selectWeeksBySevenDaysPeriodLoading }] =
-    useMutation(SELECT_WEEK_BY_SEVEN_DAYS_PERIOD, {
-      refetchQueries: [GET_WEEKS, 'GetWeeks'],
-      awaitRefetchQueries: true,
-    });
+  const [
+    selectWeek,
+    {
+      loading: selectWeeksBySevenDaysPeriodLoading,
+      error: selectWeeksBySevenDaysPeriodError,
+    },
+  ] = useMutation(SELECT_WEEK_BY_SEVEN_DAYS_PERIOD, {
+    refetchQueries: [GET_WEEKS, 'GetWeeks'],
+    awaitRefetchQueries: true,
+  });
   const [shouldShowCalendarModal, setShouldShowCalendarModal] = useState(false);
   const weeksState = useSelector<RootState, TasksState>((state) => state.tasks);
   const { weeksCalendarSelectedYear, firstYearWithTasks } = useSelector<
@@ -98,6 +105,15 @@ export default function CalendarButton() {
   };
 
   const weeks = generateWeeks(weeksCalendarSelectedYear);
+
+  useMemo(() => {
+    handleGraphqlError([
+      {
+        error: selectWeeksBySevenDaysPeriodError,
+        errorCode: ErrorCodes.WeekSelectionError,
+      },
+    ]);
+  }, [selectWeeksBySevenDaysPeriodError]);
 
   return (
     <>
