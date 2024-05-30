@@ -38,7 +38,7 @@
     "@typescript-eslint/parser": "^7.0.0",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.56.0",
-    "eslint-config-universe": "^12.0.0",
+    "eslint-config-universe": "^13.0.0",
     "eslint-plugin-react": "^7.33.2",
     "husky": "^9.0.0",
     "prettier": "^3.2.2",
