@@ -1,3 +1,4 @@
+import 'expo-dev-client';
 import {
   ApolloClient,
   InMemoryCache,
