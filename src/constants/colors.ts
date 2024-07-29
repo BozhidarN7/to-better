@@ -4,6 +4,7 @@ export default {
 
   PRIMARY: '#ffffff',
   PRIMARY_50: '#f1f1f1',
+  PRIMARY_100: '#e7e7e7',
   PRIMARY_300: '#dddddd',
   PRIMARY_400: '#cccccc',
   SECONDARY_25: '#a9ccff',

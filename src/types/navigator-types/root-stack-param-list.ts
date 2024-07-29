@@ -17,6 +17,7 @@ type RootStackParamList = {
     month: number;
     weekId: string;
   };
+  Register: undefined;
 };
 
 export type DailyTasksProps = NativeStackScreenProps<

@@ -1,4 +1,4 @@
-import 'expo-dev-client';
+// import 'expo-dev-client';
 import {
   ApolloClient,
   InMemoryCache,
@@ -18,6 +18,7 @@ import { COLORS } from '@/constants';
 import { ErrorCodes } from '@/enums';
 import { AllTasks, DailyTasks } from '@/screens';
 import CreateTask from '@/screens/CreateTask';
+import Register from '@/screens/Register';
 import store from '@/store';
 import { RootStackParamList } from '@/types/navigator-types';
 import { handleGraphqlError } from '@/utils';
@@ -69,12 +70,17 @@ export default function App() {
           <NavigationContainer>
             <ErrorBoundary>
               <Stack.Navigator
-                initialRouteName="AllTasks"
+                initialRouteName="Register"
                 screenOptions={{
                   headerStyle: { backgroundColor: COLORS.SECONDARY_100 },
                   headerTintColor: COLORS.PRIMARY,
                 }}
               >
+                <Stack.Screen
+                  name="Register"
+                  component={Register}
+                  options={{ title: 'Register' }}
+                />
                 <Stack.Screen
                   name="AllTasks"
                   component={AllTasks}
