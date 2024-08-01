@@ -1,3 +1,4 @@
 export { default as AllTasks } from './AllTasks';
-export { default as CreateTasks } from './CreateTask';
+export { default as CreateTask } from './CreateTask/CreateTask';
 export { default as DailyTasks } from './DailyTasks';
+export { default as Register } from './Register';

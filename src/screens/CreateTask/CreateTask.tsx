@@ -3,9 +3,12 @@ import { Fragment, useLayoutEffect, useMemo, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import categoryOptions from './category-options';
+import priorityOptions from './priority-options';
+
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
 import { CustomButton, Dropdown } from '@/components/common';
-import { COLORS, ICON_GROUPS, TASK_RESTRICTIONS } from '@/constants';
+import { COLORS, TASK_RESTRICTIONS } from '@/constants';
 import { Categories, ErrorCodes, Priorities } from '@/enums';
 import { CREATE_TASK, EDIT_TASK } from '@/gql/mutations';
 import { GET_WEEKS } from '@/gql/queries';
@@ -18,101 +21,6 @@ import { handleGraphqlError, handleServerError } from '@/utils';
 
 type DropdownOptionsIds = 'priority' | 'category';
 
-const priorityOptions: DropDownOption[] = [
-  {
-    label: 'Low',
-    value: 'low',
-    icon: {
-      iconGroup: ICON_GROUPS.FontAwesome,
-      icon: 'circle',
-      color: COLORS.PRIORITY_LOW,
-      size: 24,
-    },
-  },
-  {
-    label: 'Medium',
-    value: 'medium',
-    icon: {
-      iconGroup: ICON_GROUPS.FontAwesome,
-      icon: 'circle',
-      color: COLORS.PRIORITY_MEDIUM,
-      size: 24,
-    },
-  },
-  {
-    label: 'High',
-    value: 'high',
-    icon: {
-      iconGroup: ICON_GROUPS.FontAwesome,
-      icon: 'circle',
-      color: COLORS.PRIORITY_HIGH,
-      size: 24,
-    },
-  },
-  {
-    label: 'Very High',
-    value: 'very high',
-    icon: {
-      iconGroup: ICON_GROUPS.FontAwesome,
-      icon: 'circle',
-      color: COLORS.PRIORITY_VERY_HIGH,
-      size: 24,
-    },
-  },
-];
-
-const categoryOptions: DropDownOption[] = [
-  {
-    label: 'Home',
-    value: 'home',
-    icon: {
-      iconGroup: ICON_GROUPS.MaterialIcons,
-      icon: 'category',
-      color: COLORS.CATEGORY_HOME,
-      size: 24,
-    },
-  },
-  {
-    label: 'Outdoor',
-    value: 'outdoor',
-    icon: {
-      iconGroup: ICON_GROUPS.MaterialIcons,
-      icon: 'category',
-      color: COLORS.CATEGORY_OUTDOOR,
-      size: 24,
-    },
-  },
-  {
-    label: 'Shopping',
-    value: 'shopping',
-    icon: {
-      iconGroup: ICON_GROUPS.MaterialIcons,
-      icon: 'category',
-      color: COLORS.CATEGORY_SHOPPING,
-      size: 24,
-    },
-  },
-  {
-    label: 'Training',
-    value: 'training',
-    icon: {
-      iconGroup: ICON_GROUPS.MaterialIcons,
-      icon: 'category',
-      color: COLORS.CATEGORY_TRAINING,
-      size: 24,
-    },
-  },
-  {
-    label: 'Learning',
-    value: 'learning',
-    icon: {
-      iconGroup: ICON_GROUPS.MaterialIcons,
-      icon: 'category',
-      color: COLORS.CATEGORY_LEARNING,
-      size: 24,
-    },
-  },
-];
 const NUMBER_OF_DROPDOWNS = 2;
 
 export default function CreateTask({ route, navigation }: CreateTasksProps) {
