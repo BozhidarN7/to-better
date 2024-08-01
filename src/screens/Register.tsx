@@ -1,6 +1,7 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 
-import { Icon } from '@/components/common';
+import { CustomButton, Icon } from '@/components/common';
 import { COLORS, ICON_GROUPS } from '@/constants';
 
 export default function Register() {
@@ -62,6 +63,21 @@ export default function Register() {
           />
         </View>
       </View>
+      <View style={styles.buttonsContainer}>
+        <LinearGradient colors={[COLORS.ACCENT_100, COLORS.ACCENT_300]}>
+          <CustomButton
+            buttonStyles={[styles.button, styles.registerButton]}
+            text="Register"
+            onPress={() => {}}
+          />
+        </LinearGradient>
+        <Text>Already have an account?</Text>
+        <CustomButton
+          buttonStyles={[styles.button, styles.loginButton]}
+          text="Login"
+          onPress={() => {}}
+        />
+      </View>
     </View>
   );
 }
@@ -97,5 +113,21 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 40,
     paddingLeft: 15,
+  },
+  buttonsContainer: {
+    marginTop: 20,
+    rowGap: 15,
+    alignItems: 'center',
+  },
+  button: {
+    borderRadius: 7,
+    width: '100%',
+    borderColor: COLORS.PRIMARY,
+  },
+  registerButton: {
+    backgroundColor: COLORS.ACCENT_300,
+  },
+  loginButton: {
+    backgroundColor: COLORS.ACCENT_100,
   },
 });
