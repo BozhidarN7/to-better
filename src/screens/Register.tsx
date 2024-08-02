@@ -64,7 +64,12 @@ export default function Register() {
         </View>
       </View>
       <View style={styles.buttonsContainer}>
-        <LinearGradient colors={[COLORS.ACCENT_100, COLORS.ACCENT_300]}>
+        <LinearGradient
+          style={[styles.linearGradient, styles.button]}
+          colors={[COLORS.ACCENT_300, COLORS.SECONDARY_50]}
+          start={[0, 0]}
+          end={[1, 1]}
+        >
           <CustomButton
             buttonStyles={[styles.button, styles.registerButton]}
             text="Register"
@@ -119,13 +124,17 @@ const styles = StyleSheet.create({
     rowGap: 15,
     alignItems: 'center',
   },
+  linearGradient: {
+    elevation: 4,
+  },
   button: {
     borderRadius: 7,
     width: '100%',
     borderColor: COLORS.PRIMARY,
   },
   registerButton: {
-    backgroundColor: COLORS.ACCENT_300,
+    backgroundColor: 'transparent',
+    elevation: 0,
   },
   loginButton: {
     backgroundColor: COLORS.ACCENT_100,
