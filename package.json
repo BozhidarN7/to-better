@@ -30,7 +30,8 @@
     "react-native-shimmer-placeholder": "^2.0.9",
     "react-redux": "^9.1.0",
     "rollbar-react-native": "^1.0.0-beta.2",
-    "expo-build-properties": "~0.12.3"
+    "expo-build-properties": "~0.12.3",
+    "expo-checkbox": "~3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

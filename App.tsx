@@ -16,7 +16,13 @@ import { Provider } from 'react-redux';
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
 import { COLORS } from '@/constants';
 import { ErrorCodes } from '@/enums';
-import { AllTasks, DailyTasks, Register, CreateTask } from '@/screens';
+import {
+  AllTasks,
+  DailyTasks,
+  Register,
+  CreateTask,
+  LoginScreen,
+} from '@/screens';
 import store from '@/store';
 import { RootStackParamList } from '@/types/navigator-types';
 import { handleGraphqlError } from '@/utils';
@@ -68,7 +74,7 @@ export default function App() {
           <NavigationContainer>
             <ErrorBoundary>
               <Stack.Navigator
-                initialRouteName="Register"
+                initialRouteName="Login"
                 screenOptions={{
                   headerStyle: { backgroundColor: COLORS.SECONDARY_100 },
                   headerTintColor: COLORS.PRIMARY,
@@ -78,6 +84,11 @@ export default function App() {
                   name="Register"
                   component={Register}
                   options={{ title: 'Register' }}
+                />
+                <Stack.Screen
+                  name="Login"
+                  component={LoginScreen}
+                  options={{ title: 'Log in' }}
                 />
                 <Stack.Screen
                   name="AllTasks"
