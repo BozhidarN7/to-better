@@ -5,7 +5,7 @@ import { IconTypes } from '@/types';
 interface IconGroupsMap {
   [key: string]: typeof FontAwesome | typeof Ionicons | typeof MaterialIcons;
 }
-interface IconProps {
+export interface IconProps {
   iconGroup: string;
   icon: IconTypes;
   color: string;
